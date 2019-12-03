@@ -29,6 +29,20 @@ const DisplayAllUsers = props => {
             </div>
         )
     })
+    
+    if(all.length===0){
+        return (
+            <div className="ui icon large blue message" style={{marginTop:"2rem"}}>
+                <i className="info icon"></i>
+                <div className="content">
+                    <div className="header">
+                        No User is added yet! 
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    
     return <div className="ui celled grid">{all}</div>
 }
 
