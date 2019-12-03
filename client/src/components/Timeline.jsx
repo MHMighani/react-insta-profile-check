@@ -38,8 +38,8 @@ const ListOfChanges = (props) => {
 
 function NoChangeComponent() {
     return (
-        <div>
-            <div className="ui icon message">
+        <div style={{display:"flex",justifyContent:"center"}}>
+            <div className="ui icon large blue message" style={{marginTop:"2rem",width:"85%"}}>
                 <i className="frown outline icon"></i>
                 <div className="content">
                     <div className="header">
@@ -76,8 +76,6 @@ export default class Timeline extends Component {
         }
 
         if(users_changes.length!==0){
-            
-            
             updateUsersChanges(users_changes)
         }
         

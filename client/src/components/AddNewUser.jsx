@@ -72,9 +72,15 @@ export default class AddNewUser extends Component {
                     <MessageBox resultMessage={this.state.resultMessage} />    
 
                     <div className="four column row">
-                        <div className="ui left icon input">
-                        <input type="text" id="newUsernameInput" placeholder="Search user..." onChange={event => getUserData(event.target.value)} ></input>
-                        <i className="users icon"></i>
+                        <div className="ui left icon input"
+                            style={{marginTop:"1rem"}}
+                            >
+                            <input type="text" id="newUsernameInput" placeholder="Search user..." 
+                            onChange={event => getUserData(event.target.value)}
+                            style={{border:"1px solid black"}}
+                            >
+                            </input>
+                            <i className="users icon"></i>
                         </div>
                     </div>
                     <div className="six column row">
