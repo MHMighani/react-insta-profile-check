@@ -31,13 +31,17 @@ router.post("/add",(req,res)=>{
   });
   
   orm.addUser(userInfo,function(err,data){
-    if(err){
-      res.status(501).json({
-        message:"couldn't query database"
-      })
+    if(err && err.errno===1062){
+
+        res.status(501).json({
+          type:"error",
+          errno: 1062,
+        })
 
     }else{
-      res.json({message:"user successfully added !!"})
+      res.json({
+        type: "success"
+      })
     }
   })  
 })

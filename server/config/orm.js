@@ -42,8 +42,14 @@ const orm = {
          )`
 
         connection.query(sqlQuery,function(err,data){
-            if(err) cb(err,null)
-            cb(data,null)
+            if(err){
+                console.log(err);
+                cb(err,null)
+            }else{
+                cb(data,null)
+            }
+            
+            
         }) 
     },
 

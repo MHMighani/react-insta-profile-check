@@ -24,7 +24,7 @@ export function getUserDataFromInstagram(username) {
 export function addNewUserToDatabase(userData) {
     let url = `${serverAddress}/add`
 
-    fetch(url, {
+    return fetch(url, {
         method: 'POST',
         body: JSON.stringify(userData),
         headers: {'Content-Type': 'application/json;charset=utf-8'}
@@ -32,9 +32,9 @@ export function addNewUserToDatabase(userData) {
     .then(res => res.json())
     .then(
         (result) => {
-            //callback for the response
+            return result
         }
-    );
+    )
 }
 
 export function deleteUser(userId) {
