@@ -1,6 +1,19 @@
 const connection = require("./connection");
+const saveProfilePics = require("../saveProfilePics")
 var remove = require('remove')
 
+
+const getCurrentDate = () => {
+    date = new Date()
+
+    const year = date.getUTCFullYear()
+    const month = date.getUTCMonth()
+    const day = date.getUTCDay()
+
+    const dateString = year + '-' + month + '-' + day
+
+    return dateString
+}
 
 const orm = {
 
@@ -34,6 +47,7 @@ const orm = {
         const num_following = userInfo.num_following.count
         const num_followers = userInfo.num_followers.count
 
+        // sqlQuery for adding a user
         const sqlQuery = `insert into insta_profile_info(
          profile_id,username,profile_pic_url,biography,full_name,is_private,
          num_following,num_followers)
@@ -48,16 +62,53 @@ const orm = {
             }else{
                 cb(data,null)
             }
-            
-            
-        }) 
+        })
+        
+        const date = getCurrentDate()
+        const profile_image_number = saveProfilePics.imageNameExtracter(profile_pic_url)
+        
+        //sql query for adding history of a user to database
+
+        const sqlQuery2 = `
+        insert into bio_history(bio_text,date_modified,user_id) 
+        values('${biography}','${date}','${profile_id}');
+
+        insert into full_name_history(full_name,date_modified,user_id)
+        values('${fullName}','${date}','${profile_id}');
+
+        insert into profile_image_history(image_number,date_modified,user_id)
+        values('${profile_image_number}','${date}','${profile_id}');
+        `
+
+        connection.query(sqlQuery2,function(err,data){
+            if(err){
+                console.log(err);
+            }else{
+                console.log(`information of ${userName} added to history`)
+            }
+        })
     },
 
     //deleting a user
     deleteUser:function(userId,cb){
-        sqlQuery = `delete from insta_profile_info where profile_id='${userId}'`
+        sqlQuery1 = `
+        delete from bio_history where user_id='${userId}';
+        delete from full_name_history where user_id='${userId}';
+        delete from profile_image_history where user_id='${userId}';
+        `
+
+        connection.query(sqlQuery1,function(err,data){
+            if(err){
+                console.log(err);
+            }else{
+                console.log("user history information completely deleted");
+                
+            }
+        })
+
+        sqlQuery2 = `delete from insta_profile_info where profile_id='${userId}'`
         const profile_pic_folder_path = 'instagram_users_profile_pics'
-        connection.query(sqlQuery,function(err,data){
+        connection.query(sqlQuery2,function(err,data){
             if(err){
                 console.log(err);
                 cb(err,null)

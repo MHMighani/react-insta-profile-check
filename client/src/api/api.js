@@ -1,27 +1,33 @@
-// import axios from 'axios'
+import axios from 'axios'
 // import {resolve} from './resolve.js'
 
 var serverAddress = `http://localhost:4000`
 
-export function getAllUsersInfo(){
+const getAllUsersInfo = async () => {
     let url = `${serverAddress}/all`
 
-    return fetch(url,{
-        method: 'GET',
-        headers: {'Content-Type': 'application/json;charset=utf-8'}
-    }).then(res=>res.json())
+    const response = await axios.get(url)
+    const data = await response.data.data
+
+    return data
 }
 
 
-export function getUserDataFromInstagram(username) {
-    
+const getUserDataFromInstagram = async (username) => {
     let url = `https://www.instagram.com/${username}/?__a=1`
+    let data
+    try{
+        const response = await axios.get(url)
+        data = await response.data
+    }catch(error){
+        console.log(error)
+    }
+    
 
-    return fetch(url)
-        .then(res=>res.json())
+    return data
 }
 
-export function addNewUserToDatabase(userData) {
+function addNewUserToDatabase(userData) {
     let url = `${serverAddress}/add`
 
     return fetch(url, {
@@ -37,20 +43,20 @@ export function addNewUserToDatabase(userData) {
     )
 }
 
-export function deleteUser(userId) {
+function deleteUser(userId) {
     let url = `${serverAddress}/delete/${userId}`
 
     fetch(url,{method:'DELETE'})
 }
 
-export function getUsersChanges(){
+function getUsersChanges(){
     let url = `${serverAddress}/timeline`
 
     return fetch(url,{method:'GET'})
     .then(response=>response.json())
 }
 
-export function updateUsersChanges(users_changes){
+function updateUsersChanges(users_changes){
     let url = `${serverAddress}/update`
 
     fetch(url,{
@@ -59,5 +65,14 @@ export function updateUsersChanges(users_changes){
         headers: {'Content-Type': 'application/json;charset=utf-8'}
     })
     .then(res=>res.json())
-    
+}
+
+
+export {
+    getAllUsersInfo,
+    getUserDataFromInstagram,
+    addNewUserToDatabase,
+    deleteUser,
+    getUsersChanges,
+    updateUsersChanges
 }

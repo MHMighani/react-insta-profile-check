@@ -52,19 +52,18 @@ export default class AddNewUser extends Component {
     }
 
     render() {
-        const getUserData = (username) => {
-            getuser(username)
-                .then(result=>{
-                    if(typeof(result.graphql)==="undefined"){
-                        return
-                    }else{
-                        result = result.graphql
-                    }
-                    if(typeof(result.user)==="object"){
-                        result = result.user
-                        this.setState({info:result})
-                    }
-                })
+        const getUserData = async username => {
+            let userInfo = await getuser(username)
+
+            if(typeof(userInfo.graphql)==="undefined"){
+                return
+            }else{
+                userInfo = userInfo.graphql
+            }
+            if(typeof(userInfo.user)==="object"){
+                userInfo = userInfo.user
+                this.setState({info:userInfo})
+            }
         }
  
         return (

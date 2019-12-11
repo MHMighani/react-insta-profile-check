@@ -53,11 +53,10 @@ export default class AllUsers extends Component {
         this.state = {userData:[]}
     }
 
-    componentDidMount(){        
-        getAllUsersInfo()
-        .then((result)=>{
-            this.setState({userData:result.data})
-        })
+    async componentDidMount(){        
+        const savedUsersInformation = await getAllUsersInfo()
+        
+        this.setState({userData:savedUsersInformation})
     }
 
     deleteOne = (userId) => {
