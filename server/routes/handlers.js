@@ -22,6 +22,8 @@ router.get("/all",(req,res)=>{
 })
 
 router.post("/add",(req,res)=>{
+  console.log(req);
+  
   const userInfo = req.body
   mkdirp(`./instagram_users_profile_pics/${userInfo.profile_id}`)
   
@@ -85,7 +87,7 @@ router.delete("/delete/:id",function(req,res){
         message:`couldn't delete user ${userId}`
       })
     }else{
-      return res.json({id})
+      return res.json({userId})
     }
   })
 })

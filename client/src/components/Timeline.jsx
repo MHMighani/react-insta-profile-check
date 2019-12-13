@@ -58,10 +58,10 @@ export default class Timeline extends Component {
 
         this.state = {users_change_information:[]}
     }
-    componentDidMount(){
-        getUsersChanges()
-        .then(result=>this.setState({users_change_information:result}))
-        
+    async componentDidMount(){
+        const users_changes = await getUsersChanges()
+
+        this.setState({users_change_information:users_changes})
     }
 
     

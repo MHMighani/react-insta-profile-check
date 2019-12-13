@@ -15,56 +15,41 @@ const getAllUsersInfo = async () => {
 
 const getUserDataFromInstagram = async (username) => {
     let url = `https://www.instagram.com/${username}/?__a=1`
-    let data
-    try{
-        const response = await axios.get(url)
-        data = await response.data
-    }catch(error){
-        console.log(error)
-    }
     
+    const response = await axios.get(url)
+    const data = await response.data
 
     return data
 }
 
-function addNewUserToDatabase(userData) {
+const addNewUserToDatabase = async (userData) => {
     let url = `${serverAddress}/add`
 
-    return fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(userData),
-        headers: {'Content-Type': 'application/json;charset=utf-8'}
-    })
-    .then(res => res.json())
-    .then(
-        (result) => {
-            return result
-        }
-    )
+    const response = await axios.post(url,userData)
+    const status = await response.data
+
+    return status
 }
 
-function deleteUser(userId) {
+const deleteUser = async (userId) => {
     let url = `${serverAddress}/delete/${userId}`
 
-    fetch(url,{method:'DELETE'})
+    await axios.delete(url)
 }
 
-function getUsersChanges(){
+const getUsersChanges = async () => {
     let url = `${serverAddress}/timeline`
-
-    return fetch(url,{method:'GET'})
-    .then(response=>response.json())
+    
+    const response = await axios.get(url)
+    const data = await response.data
+    
+    return data
 }
 
-function updateUsersChanges(users_changes){
+const updateUsersChanges = async (users_changes) => {
     let url = `${serverAddress}/update`
 
-    fetch(url,{
-        method:"POST",
-        body: JSON.stringify(users_changes),
-        headers: {'Content-Type': 'application/json;charset=utf-8'}
-    })
-    .then(res=>res.json())
+    await axios.post(url,users_changes)
 }
 
 

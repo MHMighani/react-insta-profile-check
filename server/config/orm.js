@@ -113,7 +113,7 @@ const orm = {
                 console.log(err);
                 cb(err,null)
             }else{
-                cb(data,null)
+                cb(null,data)
 
                 //deleting user's pic folder
                 remove(`${profile_pic_folder_path}/${userId}`,function(err){
