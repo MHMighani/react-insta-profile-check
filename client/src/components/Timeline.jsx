@@ -5,18 +5,19 @@ import './Timeline.css'
 
 const ListOfChanges = (props) => {
     return(
-        props.users.map(user=>{
+        props.users.map(({userId,profile_pic_url,username,changes})=>{
+
             return(
-                <List>
+                <List className="ui list" key={userId}>
                     <List.Item>
-                        <Image avatar size="tiny" src={user.profile_pic_url} />
+                        <Image avatar size="tiny" src={profile_pic_url} />
                         <List.Content>
-                            <List.Header as='a' href={`https://instagram.com/${user.username}/`} target="_blank">{user.username}</List.Header>
+                            <List.Header as='a' href={`https://instagram.com/${username}/`} target="_blank">{username}</List.Header>
                             <List.Description>
                                 {
-                                    user.changes.map(changeObject=>{
+                                    changes.map((changeObject,index)=>{
                                         return (
-                                            <p>
+                                            <p key={index}>
                                                 <b>{changeObject.changeText}</b> is changed.
                                                 it is now <b>{changeObject.newValue}</b>
                                             </p>
