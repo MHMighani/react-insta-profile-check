@@ -151,8 +151,6 @@ const orm = {
         })
         
         sqlQuery = sqlQuery[0]
-        console.log(sqlQuery);
-        
         
         connection.query(sqlQuery,function(err,data){
             if(err){

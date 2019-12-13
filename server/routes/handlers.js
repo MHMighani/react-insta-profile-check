@@ -22,8 +22,6 @@ router.get("/all",(req,res)=>{
 })
 
 router.post("/add",(req,res)=>{
-  console.log(req);
-  
   const userInfo = req.body
   mkdirp(`./instagram_users_profile_pics/${userInfo.profile_id}`)
   

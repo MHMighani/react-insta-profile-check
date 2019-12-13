@@ -38,37 +38,3 @@ app.use("/",routes)
 app.listen(PORT, ()=>{
     console.log(`server is starting at PORT ${PORT}`);    
 });
-
-
-
-
-// //function for saving images to public folder
-// var profileImgSaver = function(uri, filename, callback){
-//     request.head(uri, function(err, res, body){
-//       console.log('content-type:', res.headers['content-type']);
-//       console.log('content-length:', res.headers['content-length']);
-  
-//       request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-//     });
-//   };
-
-
-// app.get("/",async (req,res)=>{
-//     const userName = req.query.username
-    
-//     // const response = await axios.get(`https://www.instagram.com/${userName}/?__a=1`)
-//     const response = await axios.get(`https://www.instagram.com/salar_slmt/?__a=1`)
-//     const profile_url = response.data["graphql"]["user"]["profile_pic_url_hd"]
-
-//     profileImgSaver(profile_url,'public/myProfilePic2.png',function(){
-//         console.log("image saved,go and check it out");
-//     })
-
-//     res.json({
-//         data:profile_url
-//     })
-// })
-
-// app.listen(4000,()=>{
-//     console.log("we are listening on port 4000");    
-// })
