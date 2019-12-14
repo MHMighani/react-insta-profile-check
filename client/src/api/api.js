@@ -16,19 +16,29 @@ const getAllUsersInfo = async () => {
 const getUserDataFromInstagram = async (username) => {
     let url = `https://www.instagram.com/${username}/?__a=1`
     
-    const response = await axios.get(url)
-    const data = await response.data
+    try{
+        const response = await axios.get(url)
+        const data = await response.data
 
-    return data
+        return data
+    }catch(error){
+        const data = {error:true}
+        return data
+    }
+    
 }
 
 const addNewUserToDatabase = async (userData) => {
     let url = `${serverAddress}/add`
 
-    const response = await axios.post(url,userData)
-    const status = await response.data
-
-    return status
+    try{
+        const response = await axios.post(url,userData)
+        const SuccessStatus = await response.data
+        return SuccessStatus
+    }catch(error){
+        const FailedStatus = {type:"error",errno:1062}
+        return FailedStatus
+    }
 }
 
 const deleteUser = async (userId) => {
