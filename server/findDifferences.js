@@ -43,7 +43,7 @@ function findDifferences(oldUserInfo){
                     {
                     parameterChanged:"biography",
                     changeText:"biography",
-                    newValue:info.biography,
+                    newValue:info.biography.split('\\').join('\\\\'),
                     
                     }
                 )
@@ -63,7 +63,7 @@ function findDifferences(oldUserInfo){
                     {
                     parameterChanged:"full_name",
                     changeText:"full name",
-                    newValue:info.full_name
+                    newValue:info.full_name.split('\\').join('\\\\')
                     }
                 )
             }

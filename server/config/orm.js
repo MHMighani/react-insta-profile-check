@@ -8,7 +8,7 @@ const getCurrentDate = () => {
 
     const year = date.getUTCFullYear()
     const month = date.getUTCMonth()
-    const day = date.getUTCDay()
+    const day = date.getUTCDate()
 
     const dateString = year + '-' + month + '-' + day
 
@@ -33,8 +33,8 @@ const orm = {
     addUser:function(userInfo,cb){
         const profile_pic_url = userInfo.profile_pic_url
         const userName = userInfo.userName
-        const biography = userInfo.biography
-        const fullName = userInfo.fullName
+        const biography = userInfo.biography.split('\\').join('\\\\')
+        const fullName = userInfo.fullName.split('\\').join('\\\\')
         
         let is_private = 0
         if(userInfo.is_private){
@@ -129,7 +129,6 @@ const orm = {
 
     //updating user's information after changing
     updatingUser:function(changes,cb){
-        
         let sqlQuery = changes.map(userChange=>{
             const userId = userChange.userId
             
@@ -142,7 +141,7 @@ const orm = {
             })
 
             changeQuery = changeQuery.join(',')
-            console.log(changeQuery);
+            
             
 
             const mainSqlQuery = `update insta_profile_info\nset ${changeQuery}\nwhere profile_id = '${userId}';`
