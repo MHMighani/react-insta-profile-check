@@ -108,12 +108,20 @@ const orm = {
         return `${column} = '${newValue}'`;
       });
 
-      const date = getCurrentDate()
+      let historyChangeQuery = userChange.changes.map(change => {
+        const date = getCurrentDate()
+        column = change.parameterChanged;
+        newValue = change.newValue;
+        return `insert into instagram_change_history(user_id,changed_parameter,new_value,date_modified) values('${userId}','${column}','${newValue}','${date}')`
+      });
+
       changeQuery = changeQuery.join(",");
+
+      const historyQuery = historyChangeQuery.join(";")
 
       const mainInfoQuery = `update insta_profile_info\nset ${changeQuery}\nwhere profile_id = '${userId}';`;
 
-      const historyQuery = `insert into instagram_change_history(user_id,changed_parameter,new_value,date_modified) values('${userId}','${column}','${newValue}','${date}');`
+      // const historyQuery = `insert into instagram_change_history(user_id,changed_parameter,new_value,date_modified) values('${userId}','${column}','${newValue}','${date}');`
 
       const mainSqlQuery = mainInfoQuery + historyQuery;
 
@@ -130,6 +138,15 @@ const orm = {
       }
       cb(null, data);
     });
+  },
+
+  getChangesHistory: function(cb){
+      const sqlQuery = `select * from instagram_change_history`
+
+      connection.query(sqlQuery,function(err,data){
+          if(err) cb(err,null)
+          cb(null,data)
+      })
   }
 };
 

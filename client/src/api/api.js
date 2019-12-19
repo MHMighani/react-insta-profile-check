@@ -62,6 +62,14 @@ const updateUsersChanges = async (users_changes) => {
     await axios.post(url,users_changes)
 }
 
+const getChangesHistory = async () => {
+    let url = `${serverAddress}/changes`
+
+    const response = await axios.get(url)
+    
+    console.log(response)
+}
+
 
 export {
     getAllUsersInfo,
@@ -69,5 +77,6 @@ export {
     addNewUserToDatabase,
     deleteUser,
     getUsersChanges,
-    updateUsersChanges
+    updateUsersChanges,
+    getChangesHistory
 }

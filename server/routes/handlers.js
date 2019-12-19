@@ -104,4 +104,14 @@ router.all("/update",(req,res)=>{
   })
 })
 
+router.get('/changes',(req,res)=>{
+  orm.getChangesHistory(function(err,changesHistory){
+    if(err){
+      console.log("couldnt get user's change record")
+    }else{
+      return res.json(changesHistory)
+    }
+  })
+})
+
 module.exports = router

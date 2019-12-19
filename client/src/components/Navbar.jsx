@@ -28,6 +28,9 @@ export default class Navbar extends Component {
                 <Link to="/add" className="nav-link">
                     Add user
                 </Link>
+                <Link to="/changes" className="nav-link">
+                    Change history
+                </Link>
             </NavWrapper>
         )
     }

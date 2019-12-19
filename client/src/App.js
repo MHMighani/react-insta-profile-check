@@ -7,6 +7,7 @@ import Timeline from './components/Timeline'
 import AddNewUser from './components/AddNewUser'
 import Default from './components/Default'
 import AllUsers from './components/AllUsers'
+import ChangesHistory from './components/ChangesHistory'
 import Navbar from './components/Navbar'
 
 
@@ -26,6 +27,7 @@ export default class App extends Component {
           <Route exact path="/add" component={AddNewUser} />
           <Route exact path="/" component={Timeline} />
           <Route exact path="/allusers" component={AllUsers} />
+          <Route exact path="/changes" component={ChangesHistory} />
           <Route component={Default} />
         </Switch>
      </div>
