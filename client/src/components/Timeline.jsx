@@ -83,15 +83,20 @@ export default class Timeline extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { users_change_information: [] };
+    this.state = { users_change_information: [], spinnerActive: true };
   }
   async componentDidMount() {
     const users_changes = await getUsersChanges();
+    
+    this.setState({spinnerActive: false})
 
     this.setState({ users_change_information: users_changes });
   }
 
   render() {
+    if(this.state.spinnerActive){
+      return <Spinner />
+    }
     const users_changes = this.state.users_change_information;
     let message;
 
