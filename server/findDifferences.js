@@ -34,7 +34,8 @@ function findDifferences(oldUserInfo){
                 changeObject.changes.push(
                     {parameterChanged:"profile_pic_url",
                     changeText:"profile picture",
-                    newValue: info.profile_pic_url
+                    newValue: info.profile_pic_url,
+                    oldValue:oldUserInfo.profile_pic_url
                 }
                     )
             }
@@ -44,7 +45,7 @@ function findDifferences(oldUserInfo){
                     parameterChanged:"biography",
                     changeText:"biography",
                     newValue:info.biography.split('\\').join('\\\\'),
-                    
+                    oldValue:oldUserInfo.biography
                     }
                 )
             }
@@ -53,7 +54,8 @@ function findDifferences(oldUserInfo){
                     {
                     parameterChanged:"is_private",
                     changeText:"privacy",
-                    newValue:info.is_private
+                    newValue:info.is_private,
+                    oldValue:oldUserInfo.is_private
                     }
                 )    
                 
@@ -63,7 +65,8 @@ function findDifferences(oldUserInfo){
                     {
                     parameterChanged:"full_name",
                     changeText:"full name",
-                    newValue:info.full_name.split('\\').join('\\\\')
+                    newValue:info.full_name.split('\\').join('\\\\'),
+                    oldValue:oldUserInfo.full_name
                     }
                 )
             }

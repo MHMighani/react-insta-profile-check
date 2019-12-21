@@ -112,7 +112,8 @@ const orm = {
         const date = getCurrentDate()
         column = change.parameterChanged;
         newValue = change.newValue;
-        return `insert into instagram_change_history(user_id,changed_parameter,new_value,date_modified) values('${userId}','${column}','${newValue}','${date}')`
+        oldValue = change.oldValue;
+        return `insert into instagram_change_history(user_id,changed_parameter,old_value,new_value,date_modified) values('${userId}','${column}','${oldValue}','${newValue}','${date}')`
       });
 
       changeQuery = changeQuery.join(",");
