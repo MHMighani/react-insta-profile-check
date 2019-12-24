@@ -15,8 +15,10 @@ function findDifferences(oldUserInfo){
                     profile_pic_url: userInfo.profile_pic_url_hd,
                     biography: userInfo.biography,
                     full_name: userInfo.full_name,
+                    external_url: userInfo.external_url?userInfo.external_url:"",
                     is_private: userInfo.is_private,
-                }    
+                }
+               
             return info
         }).then(info=>{
 
@@ -67,6 +69,16 @@ function findDifferences(oldUserInfo){
                     changeText:"full name",
                     newValue:info.full_name.split('\\').join('\\\\'),
                     oldValue:oldUserInfo.full_name
+                    }
+                )
+            }
+            if(oldUserInfo.external_url!==info.external_url){
+                changeObject.changes.push(
+                    {
+                    parameterChanged:"external_url",
+                    changeText:"website link",
+                    newValue:info.external_url,
+                    oldValue:oldUserInfo.external_url
                     }
                 )
             }

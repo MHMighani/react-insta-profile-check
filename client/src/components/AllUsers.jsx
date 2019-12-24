@@ -11,6 +11,7 @@ const DisplayAllUsers = props => {
         username,
         profile_pic_url,
         biography,
+        external_url,
         is_private
       },
       index
@@ -27,12 +28,13 @@ const DisplayAllUsers = props => {
       }
 
       const userInformation = {
-        profile_id: profile_id,
-        username: username,
-        profile_pic_url: profile_pic_url,
-        biography: biography,
-        full_name: full_name,
-        is_private: is_private,
+        profile_id,
+        username,
+        profile_pic_url,
+        biography,
+        full_name,
+        external_url,
+        is_private,
         buttonText: {
           text: "Delete",
           icon: "delete icon",

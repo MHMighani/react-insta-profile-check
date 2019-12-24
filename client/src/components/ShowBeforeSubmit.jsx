@@ -6,9 +6,8 @@ export default class ShowBeforeSubmit extends Component {
     render() {
 
         if(typeof(this.props.userInformation)!=="undefined"){
-
-            const userInfo = this.props.userInformation
             
+            const userInfo = this.props.userInformation
             
 
             const userObject = {
@@ -18,6 +17,7 @@ export default class ShowBeforeSubmit extends Component {
                 fullName: userInfo.full_name,
                 is_private: userInfo.is_private,
                 profile_id: userInfo.id,
+                external_url: userInfo.external_url?userInfo.external_url:"",
                 num_following: userInfo.edge_follow,
                 num_followers: userInfo.edge_followed_by
             }
@@ -29,6 +29,7 @@ export default class ShowBeforeSubmit extends Component {
                 biography: userInfo.biography,
                 full_name: userInfo.full_name,
                 is_private: userInfo.is_private,
+                external_url: userInfo.external_url?userInfo.external_url:"",
                 buttonText: {text:"Add User",icon:"icon add",info:userObject},
                 bio_is_active: 0
             }

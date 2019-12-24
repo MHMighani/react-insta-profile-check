@@ -33,6 +33,7 @@ const orm = {
     const userName = userInfo.userName;
     const biography = userInfo.biography.split("\\").join("\\\\");
     const fullName = userInfo.fullName.split("\\").join("\\\\");
+    const external_url = userInfo.external_url;
 
     let is_private = 0;
     if (userInfo.is_private) {
@@ -47,10 +48,10 @@ const orm = {
 
     // sqlQuery for adding a user
     const sqlQuery = `insert into insta_profile_info(
-         profile_id,username,profile_pic_url,biography,full_name,is_private,
+         profile_id,username,profile_pic_url,biography,full_name,is_private,external_url,
          num_following,num_followers)
          values('${profile_id}','${userName}','${profile_pic_url}','${biography}',
-                '${fullName}','${is_private}','${num_following}','${num_followers}'
+                '${fullName}','${is_private}','${external_url}','${num_following}','${num_followers}'
          )`;
 
     connection.query(sqlQuery, function(err, data) {

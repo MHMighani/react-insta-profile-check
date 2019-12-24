@@ -45,7 +45,6 @@ export default class AddNewUser extends Component {
 
         addUser(userData)
         .then(result=>{
-            console.log(result)
             if(result.type === "error" && result.errno===1062 ){
                 this.setState({resultMessage: {type:"error",username:username,errno:1062}})
             }else if(result.type === "success"){
