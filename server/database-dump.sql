@@ -14,60 +14,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `bio_history`
---
-
-DROP TABLE IF EXISTS `bio_history`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bio_history` (
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `bio_text` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `date_modified` date NOT NULL,
-  `user_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`history_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `bio_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `insta_profile_info` (`profile_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `bio_history`
---
-
-LOCK TABLES `bio_history` WRITE;
-/*!40000 ALTER TABLE `bio_history` DISABLE KEYS */;
-/*!40000 ALTER TABLE `bio_history` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `full_name_history`
---
-
-DROP TABLE IF EXISTS `full_name_history`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `full_name_history` (
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `full_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `date_modified` date NOT NULL,
-  `user_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`history_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `full_name_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `insta_profile_info` (`profile_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `full_name_history`
---
-
-LOCK TABLES `full_name_history` WRITE;
-/*!40000 ALTER TABLE `full_name_history` DISABLE KEYS */;
-/*!40000 ALTER TABLE `full_name_history` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `insta_profile_info`
 --
 
@@ -77,51 +23,34 @@ DROP TABLE IF EXISTS `insta_profile_info`;
 CREATE TABLE `insta_profile_info` (
   `profile_id` bigint(20) NOT NULL,
   `username` varchar(20) COLLATE utf8mb4_persian_ci NOT NULL,
-  `full_name` varchar(25) COLLATE utf8mb4_persian_ci DEFAULT NULL,
+  `full_name` varchar(500) COLLATE utf8mb4_persian_ci DEFAULT NULL,
   `is_private` tinyint(1) DEFAULT NULL,
   `profile_pic_url` varchar(300) COLLATE utf8mb4_persian_ci NOT NULL,
   `num_following` int(11) DEFAULT NULL,
   `num_followers` int(11) DEFAULT NULL,
   `biography` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `external_url` varchar(500) COLLATE utf8mb4_persian_ci DEFAULT NULL,
   PRIMARY KEY (`profile_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `insta_profile_info`
+-- Table structure for table `instagram_change_history`
 --
 
-LOCK TABLES `insta_profile_info` WRITE;
-/*!40000 ALTER TABLE `insta_profile_info` DISABLE KEYS */;
-/*!40000 ALTER TABLE `insta_profile_info` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `profile_image_history`
---
-
-DROP TABLE IF EXISTS `profile_image_history`;
+DROP TABLE IF EXISTS `instagram_change_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `profile_image_history` (
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `image_number` varchar(200) DEFAULT NULL,
-  `date_modified` date NOT NULL,
+CREATE TABLE `instagram_change_history` (
+  `change_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`history_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `profile_image_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `insta_profile_info` (`profile_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+  `changed_parameter` varchar(20) NOT NULL,
+  `old_Value` varchar(500) DEFAULT NULL,
+  `new_Value` varchar(500) NOT NULL,
+  `date_modified` date NOT NULL,
+  PRIMARY KEY (`change_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `profile_image_history`
---
-
-LOCK TABLES `profile_image_history` WRITE;
-/*!40000 ALTER TABLE `profile_image_history` DISABLE KEYS */;
-/*!40000 ALTER TABLE `profile_image_history` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -132,4 +61,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-03 20:27:34
+-- Dump completed on 2019-12-26 23:24:49
