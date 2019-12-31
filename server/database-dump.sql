@@ -45,11 +45,11 @@ CREATE TABLE `instagram_change_history` (
   `change_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
   `changed_parameter` varchar(20) NOT NULL,
-  `old_Value` varchar(500) DEFAULT NULL,
-  `new_Value` varchar(500) NOT NULL,
+  `old_Value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `new_Value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_modified` date NOT NULL,
   PRIMARY KEY (`change_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -61,4 +61,4 @@ CREATE TABLE `instagram_change_history` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-26 23:24:49
+-- Dump completed on 2019-12-31 22:24:50
