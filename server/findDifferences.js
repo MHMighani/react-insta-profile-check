@@ -1,5 +1,5 @@
 const getUserDataFromInstagram = require('./api/api.js')
-const imageNameExtracter = require('./saveProfilePics.js')
+const saveProfilePicsMethods = require('./saveProfilePics')
 fetch = require('node-fetch')
 
 function findDifferences(oldUserInfo){
@@ -28,10 +28,10 @@ function findDifferences(oldUserInfo){
                 profile_pic_url: info.profile_pic_url,
                 changes:[]
             }
-
-            let oldImageNameString = (imageNameExtracter.imageNameExtracter(oldUserInfo.profile_pic_url))
-            let imageNameString = (imageNameExtracter.imageNameExtracter(info.profile_pic_url));
-
+            
+            let oldImageNameString = saveProfilePicsMethods.imageNameExtracter(oldUserInfo.profile_pic_url)
+            let imageNameString = saveProfilePicsMethods.imageNameExtracter(info.profile_pic_url)
+            const imagePath = `./instagram_users_profile_pics/${info.profile_id}/${imageNameString}.jpg`
             if(imageNameString!==oldImageNameString){
                 changeObject.changes.push(
                     {parameterChanged:"profile_pic_url",
@@ -39,7 +39,8 @@ function findDifferences(oldUserInfo){
                     newValue: info.profile_pic_url,
                     oldValue:oldUserInfo.profile_pic_url
                 }
-                    )
+                )
+                saveProfilePicsMethods.profileImgSaver(info.profile_pic_url,imagePath,function(){})
             }
             if(oldUserInfo.biography!==info.biography){
                 changeObject.changes.push(
