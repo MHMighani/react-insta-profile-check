@@ -57,8 +57,8 @@ function findDifferences(oldUserInfo){
                     {
                     parameterChanged:"is_private",
                     changeText:"privacy",
-                    newValue:info.is_private,
-                    oldValue:oldUserInfo.is_private
+                    newValue:info.is_private?"1":"0",
+                    oldValue:oldUserInfo.is_private?"1":"0"
                     }
                 )    
                 

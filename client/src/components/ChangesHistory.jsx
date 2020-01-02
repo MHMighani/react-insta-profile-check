@@ -4,15 +4,20 @@ import { getChangesHistory } from "../api/api";
 
 //this function returns styled values
 const valueStyler = value => {
-  if (value) {
-    return <b>{value}</b>;
-  } else {
+  if (!value) {
     return (
       <b style={{ background: "blue", color: "white", padding: ".2rem .2rem" }}>
         empty
       </b>
     );
   }
+
+  if (value.length === 1 && parseInt(value)) {
+    return <b>private</b>
+  }else if(value.length===1 && !parseInt(value)){
+    return <b>public</b>
+  }
+  return <b>{value}</b>
 };
 
 const ChangeHistoryList = ({ changeHistoryArray }) => {
@@ -49,8 +54,17 @@ const ChangeHistoryList = ({ changeHistoryArray }) => {
                 </a>
                 <div className="description">
                   profile pic changed from
-                  <img className="ui avatar image tiny" src={oldValueAddress} alt="old profile pic" /> to  
-                  <img className="ui avatar image tiny" src={newValueAddress} alt="new profile pic" />
+                  <img
+                    className="ui avatar image tiny"
+                    src={oldValueAddress}
+                    alt="old profile pic"
+                  />{" "}
+                  to
+                  <img
+                    className="ui avatar image tiny"
+                    src={newValueAddress}
+                    alt="new profile pic"
+                  />
                 </div>
               </div>
             </div>
@@ -60,7 +74,11 @@ const ChangeHistoryList = ({ changeHistoryArray }) => {
         changeText = (
           <div>
             <div className="item" key={change_id}>
-              <img src={profile_pic_url} alt="profile picture" className="ui avatar tiny image"/>
+              <img
+                src={profile_pic_url}
+                alt="profile picture"
+                className="ui avatar tiny image"
+              />
               <div className="content">
                 <a
                   href={`https://www.instagram.com/${username}/`}
@@ -70,7 +88,8 @@ const ChangeHistoryList = ({ changeHistoryArray }) => {
                   {username}
                 </a>
                 <div className="description">
-                  {changed_parameter} changed from {valueStyler(old_Value)} to {valueStyler(new_Value)}
+                  {changed_parameter} changed from {valueStyler(old_Value)} to{" "}
+                  {valueStyler(new_Value)}
                 </div>
               </div>
             </div>

@@ -21,6 +21,10 @@ const ListOfChanges = props => {
             <List.Description>
               {changes.map(
                 ({ parameterChanged, newValue, changeText }, index) => {
+                  if(parameterChanged === "is_private"){
+                    
+                    newValue = newValue === "1"?"private":"public"
+                  }
                   let newValueText = <p></p>;
                   if (parameterChanged !== "profile_pic_url") {
                     newValueText = (
