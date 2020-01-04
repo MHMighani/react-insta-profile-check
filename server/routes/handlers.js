@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const axios = require("axios");
 const mkdirp = require("mkdirp")
+var fs = require('fs')
 
 // function imports
 const saveProfilePicsMethods = require('../saveProfilePics')
@@ -112,6 +113,12 @@ router.get('/changes',(req,res)=>{
       return res.json(changesHistory)
     }
   })
+})
+
+router.get('/profile_images_history/:id',function(req,res){
+  userId = req.params.id
+  const files = fs.readdirSync(`instagram_users_profile_pics/${userId}`)
+  res.json(files)
 })
 
 module.exports = router

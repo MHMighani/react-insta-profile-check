@@ -10,6 +10,7 @@ const nameOfDayReturner = dayIndex => {
         case 4: return "Thursday"
         case 5: return "Sriday"
         case 6: return "Saturday"
+        default: return ""
     }
 }
 
@@ -27,6 +28,7 @@ const nameOfMonthReturner = monthIndex => {
         case 9: return "Oct"
         case 10: return "Nov"
         case 11: return "Dec"
+        default: return ""
 }
 }
 

@@ -2,24 +2,9 @@ import React, { Component } from "react";
 import PicNameExtractor from "./PicNameExtractor";
 import { getChangesHistory } from "../api/api";
 import DateComponent from "./DateComponent";
+import valueStyler from './ValueStyler'
+import NoChangesComponent from './NoChangesComponent'
 
-//this function returns styled values
-const valueStyler = value => {
-  if (!value) {
-    return (
-      <b style={{ background: "blue", color: "white", padding: ".2rem .2rem" }}>
-        empty
-      </b>
-    );
-  }
-
-  if (value.length === 1 && parseInt(value)) {
-    return <b>private</b>;
-  } else if (value.length === 1 && !parseInt(value)) {
-    return <b>public</b>;
-  }
-  return <b>{value}</b>;
-};
 
 const ChangeHistoryList = ({ changeHistoryArray }) => {
   const changeHistoryList = changeHistoryArray
@@ -58,26 +43,31 @@ const ChangeHistoryList = ({ changeHistoryArray }) => {
           changeText = (
             <React.Fragment>
               <div className="content">
+              <div className="header">
                 <a
                   href={`https://www.instagram.com/${username}/`}
-                  target="_blank"
                   rel="noopener noreferrer"
-                  className="header"
+                  target="_blank"
+                  
                 >
-                  {username}
+                  {username} 
                 </a>
+                <DateComponent date={date_modified} />
+                </div>
                 <div className="description">
                   profile pic changed from
                   <img
                     className="ui avatar image tiny"
                     src={oldValueAddress}
                     alt="old profile pic"
+                    style={{margin:"0 1rem"}}
                   />{" "}
                   to
                   <img
                     className="ui avatar image tiny"
                     src={newValueAddress}
                     alt="new profile pic"
+                    style={{margin:"0 1rem"}}
                   />
                 </div>
               </div>
@@ -150,17 +140,7 @@ class ChangesHistory extends Component {
     }
 
     return (
-      <div className="container">
-        <div
-          className="ui icon large blue message"
-          style={{ marginTop: "2rem" }}
-        >
-          <i className="info icon"></i>
-          <div className="content">
-            <div className="header">No change Recorded yet!</div>
-          </div>
-        </div>
-      </div>
+      <NoChangesComponent section="changes" />
     );
   }
 }
