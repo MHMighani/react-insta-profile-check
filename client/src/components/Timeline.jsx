@@ -1,24 +1,25 @@
 import React, { Component } from "react";
 import { getUsersChanges, updateUsersChanges } from "../api/api.js";
-import { Image, List } from "semantic-ui-react";
+// import { Image, List } from "semantic-ui-react";
 import Spinner from "./Spinner";
 import "./Timeline.css";
 
 const ListOfChanges = props => {
+  
   return props.users.map(({ userId, profile_pic_url, username, changes }) => {
     return (
-      <List className="ui list" key={userId}>
-        <List.Item>
-          <Image avatar size="tiny" src={profile_pic_url} />
-          <List.Content>
-            <List.Header
-              as="a"
+      
+        <div className="item" key={userId}>
+          <img className="ui avatar image tiny" alt={`${username}'s profile pic`} src={profile_pic_url} />
+          <div className="content">
+            <a className="header"
               href={`https://instagram.com/${username}/`}
+              rel="noreferrer noopener"
               target="_blank"
             >
               {username}
-            </List.Header>
-            <List.Description>
+            </a>
+            <div className="description">
               {changes.map(
                 ({ parameterChanged, newValue, changeText }, index) => {
                   if(parameterChanged === "is_private"){
@@ -52,17 +53,17 @@ const ListOfChanges = props => {
                     );
                   }
                   return (
-                    <div key={index}>
-                      <b>{changeText}</b> is changed.
-                      {newValueText}
+                    <div key={index} style={{marginTop:"1rem"}}>
+                      <b>{changeText}</b> is changed.{newValueText}
+                      
                     </div>
                   );
                 }
               )}
-            </List.Description>
-          </List.Content>
-        </List.Item>
-      </List>
+            </div>
+          </div>
+        </div>
+      
     );
   });
 };
@@ -114,6 +115,6 @@ export default class Timeline extends Component {
       updateUsersChanges(users_changes);
     }
 
-    return <div>{message}</div>;
+    return <div className="ui list relaxed divided" style={{margin:"2rem"}}>{message}</div>;
   }
 }
