@@ -1,8 +1,9 @@
 const fs = require("fs")
 const request = require("request")
 
-function imageNameExtracter(profile_pic_url){  
-    const imageName = profile_pic_url.split("/")[6].split(".")[0]
+function imageNameExtracter(profile_pic_url){ 
+    const splitedUrl = profile_pic_url.split("/")
+    const imageName = splitedUrl[splitedUrl.length-1].split(".")[0]
 
     return imageName
 }
