@@ -92,6 +92,7 @@ export default class AddNewUser extends Component {
                             <input type="text" id="newUsernameInput" placeholder="Search user..." 
                             onChange={event => this.getUserData(event.target.value)}
                             style={{border:"1px solid black"}}
+                            autoComplete="off"
                             >
                             </input>
                             <i className="users icon"></i>

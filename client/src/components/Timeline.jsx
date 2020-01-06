@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { getUsersChanges, updateUsersChanges } from "../api/api.js";
-// import { Image, List } from "semantic-ui-react";
 import Spinner from "./Spinner";
 import "./Timeline.css";
 import ValueStyler from "./ValueStyler";
@@ -31,7 +30,7 @@ const ListOfChanges = props => {
                 return (
                   <div key={index} style={{ marginTop: "1rem" }}>
                     <b>{changeText}</b> is changed.it is now{" "}
-                    {ValueStyler(newValue)}
+                    {ValueStyler(newValue,parameterChanged)}
                   </div>
                 );
               }
