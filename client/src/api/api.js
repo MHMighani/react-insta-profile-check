@@ -1,5 +1,4 @@
 import axios from 'axios'
-// import {resolve} from './resolve.js'
 
 var serverAddress = `http://localhost:4000`
 
@@ -70,6 +69,14 @@ const getChangesHistory = async () => {
     return response.data
 }
 
+const profilePicsHistoryOfUser = async (profile_id) => {
+    let url = `${serverAddress}/profile_images_history/${profile_id}`
+
+    const response = await axios.get(url)
+
+    return response.data
+}
+
 
 export {
     getAllUsersInfo,
@@ -78,5 +85,6 @@ export {
     deleteUser,
     getUsersChanges,
     updateUsersChanges,
-    getChangesHistory
+    getChangesHistory,
+    profilePicsHistoryOfUser
 }

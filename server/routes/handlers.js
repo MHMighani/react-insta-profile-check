@@ -117,8 +117,11 @@ router.get('/changes',(req,res)=>{
 
 router.get('/profile_images_history/:id',function(req,res){
   userId = req.params.id
-  const files = fs.readdirSync(`instagram_users_profile_pics/${userId}`)
-  res.json(files)
+  const serverPath = `http://localhost:4000/static/${userId}/`
+  const imageNames = fs.readdirSync(`instagram_users_profile_pics/${userId}`)
+  imagePaths = imageNames.map(imageName => serverPath + imageName)
+  
+  res.json(imagePaths)
 })
 
 module.exports = router

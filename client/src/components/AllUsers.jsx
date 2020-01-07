@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { getAllUsersInfo, deleteUser } from "../api/api.js";
 import UserInformation from "./UserInformation";
-import NoChangesComponent from './NoChangesComponent'
+import NoChangesComponent from "./NoChangesComponent";
+import Slider from './slider/Slider'
+import {profilePicsHistoryOfUser} from '../api/api'
 
 const DisplayAllUsers = props => {
   const all = props.allUsers.map(
@@ -49,6 +51,7 @@ const DisplayAllUsers = props => {
           <UserInformation
             userInformation={userInformation}
             buttonFunc={props.deleteOne}
+            imageClickedFunc={props.imageClickedFunc}
           />
         </div>
       );
@@ -56,9 +59,7 @@ const DisplayAllUsers = props => {
   );
 
   if (all.length === 0) {
-    return (
-      <NoChangesComponent section="all_users" />
-    );
+    return <NoChangesComponent section="all_users" />;
   }
 
   return <div className="ui celled grid">{all}</div>;
@@ -68,10 +69,11 @@ export default class AllUsers extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { userData: [] };
+    this.state = { userData: [], profilePicsHistory:[] };
   }
 
   async componentDidMount() {
+    
     const savedUsersInformation = await getAllUsersInfo();
 
     this.setState({ userData: savedUsersInformation });
@@ -86,13 +88,21 @@ export default class AllUsers extends Component {
       })
     });
   };
+
+  imageClicked = async profile_id => {
+    const profilePics = await profilePicsHistoryOfUser(profile_id)
+    this.setState({profilePicsHistory: profilePics})
+  };
+
   render() {
     return (
       <div className="ui container">
         <DisplayAllUsers
           allUsers={this.state.userData}
           deleteOne={this.deleteOne}
+          imageClickedFunc={this.imageClicked}
         />
+        <Slider pics={this.state.profilePicsHistory} />
       </div>
     );
   }
