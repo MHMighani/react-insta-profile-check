@@ -19,9 +19,6 @@ export default class Navbar extends Component {
                 <Link to="/changes" className="nav-link">
                     Change history
                 </Link>
-                <Link to="/slider" className="nav-link">
-                    Slider
-                </Link>
             </NavWrapper>
         )
     }

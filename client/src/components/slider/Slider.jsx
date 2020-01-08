@@ -9,13 +9,16 @@ import "./slider_style.css";
 export default class Slider extends Component {
   state = {
     images: [],
-    currentImageIndex: 1,
-    modalShowClass: "modal-display-block"
+    currentImageIndex: 0,
+    modalShowClass: "modal-display-none"
   };
 
   componentDidUpdate(){
-    if(this.props.pics !== this.state.images){
-      this.setState({images:this.props.pics})
+    if(JSON.stringify(this.props.pics) !== JSON.stringify(this.state.images)){
+      
+      this.setState({images:this.props.pics,modalShowClass:"modal-display-block",currentImageIndex:0})
+      
+      
     }
   }
 

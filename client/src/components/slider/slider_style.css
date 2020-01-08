@@ -1,4 +1,7 @@
 #slider{
+    position: fixed;
+    top: 0px;
+    left: 0px;
     display: flex;
     flex-flow: column wrap;
     width: 100%;
