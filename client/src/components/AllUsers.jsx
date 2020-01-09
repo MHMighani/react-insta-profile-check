@@ -69,14 +69,19 @@ export default class AllUsers extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { userData: [], profilePicsHistory:[] };
+    this.state = { userData: [], profilePicsHistory:[], showModal:false };
   }
 
   async componentDidMount() {
     
     const savedUsersInformation = await getAllUsersInfo();
 
-    this.setState({ userData: savedUsersInformation });
+    this.setState({ userData: savedUsersInformation })
+
+  }
+
+  toggleModal = () => {
+    this.setState({showModal:!this.state.showModal})
   }
 
   deleteOne = userId => {
@@ -92,6 +97,8 @@ export default class AllUsers extends Component {
   imageClicked = async profile_id => {
     const profilePics = await profilePicsHistoryOfUser(profile_id)
     this.setState({profilePicsHistory: profilePics})
+    this.toggleModal()
+    
   };
 
   render() {
@@ -102,7 +109,7 @@ export default class AllUsers extends Component {
           deleteOne={this.deleteOne}
           imageClickedFunc={this.imageClicked}
         />
-        <Slider pics={this.state.profilePicsHistory} />
+        <Slider showModal={this.state.showModal} toggleModal={this.toggleModal} pics={this.state.profilePicsHistory} />
       </div>
     );
   }

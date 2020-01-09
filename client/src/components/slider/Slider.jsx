@@ -8,18 +8,19 @@ import "./slider_style.css";
 
 export default class Slider extends Component {
   state = {
-    images: [],
     currentImageIndex: 0,
-    modalShowClass: "modal-display-none"
+    showModal: false
   };
 
   componentDidUpdate(){
-    if(JSON.stringify(this.props.pics) !== JSON.stringify(this.state.images)){
+    // if(JSON.stringify(this.props.pics) !== JSON.stringify(this.state.images)){
+    //   this.setState({images:this.props.pics,modalShowClass:"modal-display-block",currentImageIndex:0})
+    // }
+    if(this.state.showModal!==this.props.showModal){
       
-      this.setState({images:this.props.pics,modalShowClass:"modal-display-block",currentImageIndex:0})
-      
-      
+      this.setState({currentIndex:0,showModal:this.props.showModal})
     }
+    
   }
 
   getCurrentImage() {
@@ -38,7 +39,7 @@ export default class Slider extends Component {
   };
 
   goToNext = () => {
-    if (this.state.currentImageIndex === this.state.images.length - 1) {
+    if (this.state.currentImageIndex === this.props.pics.length - 1) {
       return;
     } else {
       this.setState({ currentImageIndex: this.state.currentImageIndex + 1 });
@@ -48,21 +49,31 @@ export default class Slider extends Component {
   closeSlider = () => {
     this.setState({modalShowClass: "modal-display-none"})
   };
+
+  modalShowClass = () => {
+    if(this.state.showModal){
+      return "modal-display-block"
+    }
+    return "modal-display-none"
+  }
+
+
   render() {
     return (
-      <div className={this.state.modalShowClass}>
+      <div className={this.modalShowClass()}>
         <div id="slider">
           <div id="mainSlider">
             <LeftArrow leftArrowFunction={this.goToPrevious} />
-            <Slide image={this.getCurrentImage()} />
+            <Slide image={this.props.pics[this.state.currentImageIndex]} />
             <RightArrow
+              toggleModal={this.props.toggleModal}
               rightArrowFunction={this.goToNext}
               closeButtonFunction={this.closeSlider}
             />
           </div>
           <SliderFooter
             currentIndex={this.state.currentImageIndex}
-            numOfAllPics={this.state.images.length}
+            numOfAllPics={this.props.pics.length}
           />
         </div>
       </div>
