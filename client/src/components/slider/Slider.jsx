@@ -13,12 +13,9 @@ export default class Slider extends Component {
   };
 
   componentDidUpdate(){
-    // if(JSON.stringify(this.props.pics) !== JSON.stringify(this.state.images)){
-    //   this.setState({images:this.props.pics,modalShowClass:"modal-display-block",currentImageIndex:0})
-    // }
     if(this.state.showModal!==this.props.showModal){
       
-      this.setState({currentIndex:0,showModal:this.props.showModal})
+      this.setState({currentImageIndex:0,showModal:this.props.showModal})
     }
     
   }
