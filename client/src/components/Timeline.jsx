@@ -27,6 +27,14 @@ const ListOfChanges = props => {
           <div className="description">
             {changes.map(
               ({ parameterChanged, newValue, changeText }, index) => {
+                if(parameterChanged==="username"){
+                  return (
+                    <div key={index} style={{ marginTop: "1rem" }}>
+                      {username} has changed their username or has deactived their account!
+                    </div>
+
+                  )
+                }
                 return (
                   <div key={index} style={{ marginTop: "1rem" }}>
                     <b>{changeText}</b> is changed.it is now{" "}

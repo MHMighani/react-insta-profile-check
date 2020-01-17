@@ -6,8 +6,12 @@ function findDifferences(oldUserInfo){
     username = oldUserInfo.username
 
     return getUserDataFromInstagram(username)
-        .then(result=>{
-            userInfo = result.graphql.user
+        .then(userInfo=>{
+
+            if(userInfo.userNotFound){
+                return userInfo
+            }
+            
             const info = 
                 {
                     profile_id:userInfo.id,
@@ -21,6 +25,21 @@ function findDifferences(oldUserInfo){
                
             return info
         }).then(info=>{
+            if(info.userNotFound){
+                const changeObject = {
+                    userId: oldUserInfo.profile_id,
+                    username: oldUserInfo.username,
+                    profile_pic_url: oldUserInfo.profile_pic_url,
+                    changes:[{
+                        parameterChanged:"username",
+                        changeText:"username",
+                        newValue:username,
+                        oldValue:username
+                    }]
+                }
+
+                return changeObject
+            }
 
             const changeObject = {
                 userId: info.profile_id,
