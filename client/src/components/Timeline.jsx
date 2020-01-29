@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { getUsersChanges, updateUsersChanges } from "../api/api.js";
 import Spinner from "./Spinner";
-import "./Timeline.css";
 import ValueStyler from "./ValueStyler";
 import NoChangesComponent from './NoChangesComponent'
 

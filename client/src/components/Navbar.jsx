@@ -1,35 +1,28 @@
 import React,{Component} from 'react'
 import {Link} from 'react-router-dom'
-import styled from 'styled-components'
 
 
 export default class Navbar extends Component {
     render() {
         return (
-            <NavWrapper className="navbar navbar-expand-sm navbar-dark px-sm-5">
-                <Link to="/" className="nav-link">
-                    TimeLine
-                </Link>
-                <Link to="/allusers" className="nav-link">
-                    All users
-                </Link>
-                <Link to="/add" className="nav-link">
-                    Add user
-                </Link>
-                <Link to="/changes" className="nav-link">
-                    Change history
-                </Link>
-            </NavWrapper>
+            <div className="ui large inverted segment">
+                <div className="ui large inverted secondary pointing menu">
+                    <Link to="/" className="item">
+                        TimeLine
+                    </Link>
+                    <Link to="/allusers" className="item">
+                        All users
+                    </Link>
+                    <Link to="/add" className="item">
+                        Add user
+                    </Link>
+                    <Link to="/changes" className="item">
+                        Change history
+                    </Link>
+                </div>
+                
+            </div>
         )
     }
 }
 
-const NavWrapper = styled.div`
-    background:#6b79b0;
-    .nav-link{
-        color:white;
-        margin:0 50px;
-        text-transform:capitalize;
-        font-size:1.2rem
-    }
-`

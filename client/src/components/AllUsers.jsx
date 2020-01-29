@@ -49,6 +49,7 @@ const DisplayAllUsers = props => {
       return (
         <div key={index} className="four wide column">
           <UserInformation
+            action = "delete"
             userInformation={userInformation}
             buttonFunc={props.deleteOne}
             imageClickedFunc={props.imageClickedFunc}

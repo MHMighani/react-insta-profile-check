@@ -27,7 +27,22 @@ const getUserDataFromInstagram = async (username) => {
     
 }
 
-const addNewUserToDatabase = async (userData) => {
+const addNewUserToDatabase = async (userId) => {
+    const response = await getUserDataFromInstagram(userId)
+    const userInfo = response.graphql.user
+    
+    const userData= {
+        profile_pic_url: userInfo.profile_pic_url_hd,
+        userName: userInfo.username,
+        biography: userInfo.biography,
+        fullName: userInfo.full_name,
+        is_private: userInfo.is_private,
+        profile_id: userInfo.id,
+        external_url: userInfo.external_url?userInfo.external_url:"",
+        num_following: userInfo.edge_follow,
+        num_followers: userInfo.edge_followed_by
+    }
+
     let url = `${serverAddress}/add`
 
     try{

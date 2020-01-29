@@ -1,11 +1,15 @@
 import React, { Component } from "react";
+
 import Privacy from "./Privacy";
 import Biography from "./Biography";
+import {Link} from 'react-router-dom'
 
 export default class UserInformation extends Component {  
-  
-
   render() {
+    
+    
+
+    const action = this.props.action
 
     const {
       profile_id,  
@@ -18,8 +22,7 @@ export default class UserInformation extends Component {
       external_url,
       bio_is_active
     } = this.props.userInformation;
-
-    const info = buttonText.info;
+    
 
     var external_url_tag = (
       <p style={{ color: "lightGrey", textDecoration: "italic" }}>
@@ -64,13 +67,10 @@ export default class UserInformation extends Component {
             <Privacy is_private={is_private} />
           </div>
 
-          <div
-            onClick={() => this.props.buttonFunc(info)}
-            className="ui bottom attached button"
-          >
+          <Link to={`/modalMessage/${action}/${username}/${profile_id}`} className="ui bottom attached button">
             <i className={buttonText.icon}></i>
             {buttonText.text}
-          </div>
+          </Link>
         </div>
       );
     }
