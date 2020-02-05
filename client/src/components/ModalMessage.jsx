@@ -56,7 +56,7 @@ class ModalMessage extends React.Component {
     return "are you sure?";
   }
   render() {
-    const { action, username, id } = this.props.match.params;
+    const { action, username} = this.props.match.params;
 
     return (
       <Modal

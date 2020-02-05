@@ -15,7 +15,8 @@ const DisplayAllUsers = props => {
         profile_pic_url,
         biography,
         external_url,
-        is_private
+        is_private,
+        is_active
       },
       index
     ) => {
@@ -43,7 +44,8 @@ const DisplayAllUsers = props => {
           icon: "delete icon",
           info: profile_id
         },
-        bio_is_active: 1
+        bio_is_active: 1,
+        is_active
       };
 
       return (

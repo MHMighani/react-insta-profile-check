@@ -8,6 +8,8 @@ const getUserDataFromInstagram = async (username) => {
         const data = await response.data
         return data.graphql.user
     }catch(error){
+        
+        
         if(error.response.status === 404){
             return {
                 username,

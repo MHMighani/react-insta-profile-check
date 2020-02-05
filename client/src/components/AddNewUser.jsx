@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { getUserDataFromInstagram as getuser } from "../api/api.js";
 import UserInformation from "./UserInformation";
 import UserNameNotFound from "./UserNameNotFound";
-import styled from "styled-components";
 
 export default class AddNewUser extends Component {
   state = {
@@ -73,11 +72,3 @@ export default class AddNewUser extends Component {
     );
   }
 }
-
-const StyledMessageBox = styled.div`
-  background: ${props => (props.type === "success" ? "green" : "red")};
-  width: 35%;
-  margin-top: 2rem;
-  padding: 1rem;
-  color: white;
-`;

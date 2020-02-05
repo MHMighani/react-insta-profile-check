@@ -20,9 +20,9 @@ export default class UserInformation extends Component {
       buttonText,
       is_private,
       external_url,
-      bio_is_active
+      bio_is_active,
+      is_active
     } = this.props.userInformation;
-    
 
     var external_url_tag = (
       <p style={{ color: "lightGrey", textDecoration: "italic" }}>
@@ -42,14 +42,20 @@ export default class UserInformation extends Component {
       return <div></div>;
     } else {
       return (
-
         <div className="ui card">
             <div className="image small" onClick={()=>this.props.imageClickedFunc(profile_id)} style={{cursor:'pointer'}}>
+              {
+                is_active===0 &&
+                <label className="ui red ribbon label">Not Active</label>
+
+              }
+              
               <img src={profile_pic_url} alt="profile pic" />
             </div>
 
           <div className="content">
             <div className="header">
+              
               <a
                 href={`https://www.instagram.com/${username}/`}
                 target="_blank"
