@@ -26,12 +26,18 @@ const ListOfChanges = props => {
           <div className="description">
             {changes.map(
               ({ parameterChanged, newValue, changeText }, index) => {
-                if(parameterChanged==="username"){
+                if(parameterChanged==="is_active"){
+                  if(!parseInt(newValue)){
+                    return (
+                      <div key={index} style={{ marginTop: "1rem" }}>
+                        {username} has changed their username or has deactived their account!
+                      </div>
+                    )
+                  }
                   return (
                     <div key={index} style={{ marginTop: "1rem" }}>
-                      {username} has changed their username or has deactived their account!
+                      {username} has reactived their account !!!
                     </div>
-
                   )
                 }
                 return (

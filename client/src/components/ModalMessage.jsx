@@ -19,9 +19,13 @@ class ModalMessage extends React.Component {
   }
 
   renderActions() {
+    const {action} = this.props.match.params
     return (
       <React.Fragment>
-        <Link to="/allusers" className="ui button">
+        <Link
+          to={action === "delete" ? "/allusers" : "/add"}
+          className="ui button"
+        >
           cancel
         </Link>
         <button

@@ -25,35 +25,53 @@ function findDifferences(oldUserInfo){
                
             return info
         }).then(info=>{
-            if(info.userNotFound){
-                const changeObject = {
-                    userId: oldUserInfo.profile_id,
-                    username: oldUserInfo.username,
-                    profile_pic_url: oldUserInfo.profile_pic_url,
-                    changes:[{
-                        parameterChanged:"username",
-                        changeText:"username",
-                        newValue:username,
-                        oldValue:username
-                    }]
-                }
-
-                return changeObject
-            }
-
             const changeObject = {
                 userId: info.profile_id,
                 username: info.username,
                 profile_pic_url: info.profile_pic_url,
                 changes:[]
             }
+
+            
+            if(info.userNotFound && oldUserInfo.is_active===1){
+                const changeObject = {
+                    userId: oldUserInfo.profile_id,
+                    username: oldUserInfo.username,
+                    profile_pic_url: oldUserInfo.profile_pic_url,
+                    changes:[{
+                        parameterChanged:"is_active",
+                        changeText:"activation",
+                        newValue:"0",
+                        oldValue:"1"
+                    }]
+                }
+
+                return changeObject
+            }else if(info.userNotFound && oldUserInfo.is_active===0){
+                return changeObject
+            }
+
+            
             
             let oldImageNameString = saveProfilePicsMethods.imageNameExtracter(oldUserInfo.profile_pic_url)
             let imageNameString = saveProfilePicsMethods.imageNameExtracter(info.profile_pic_url)
             const imagePath = `./instagram_users_profile_pics/${info.profile_id}/${imageNameString}.jpg`
+
+            if(!oldUserInfo.is_active){
+                changeObject.changes.push(
+                    {
+                        parameterChanged:"is_active",
+                        changeText:"activation",
+                        newValue:"1",
+                        oldValue:"0"
+                    }
+                )
+            }
+
             if(imageNameString!==oldImageNameString){
                 changeObject.changes.push(
-                    {parameterChanged:"profile_pic_url",
+                    {
+                    parameterChanged:"profile_pic_url",
                     changeText:"profile picture",
                     newValue: info.profile_pic_url,
                     oldValue:oldUserInfo.profile_pic_url

@@ -97,8 +97,8 @@ const ChangeHistoryList = ({ changeHistoryArray }) => {
                 
 
                 <div className="description" style={{ marginTop: ".5rem" }}>
-                  {changed_parameter} changed from {valueStyler(old_Value)} to{" "}
-                  {valueStyler(new_Value)}
+                  {changed_parameter} changed from {valueStyler(old_Value,changed_parameter)} to{" "}
+                  {valueStyler(new_Value,changed_parameter)}
                 </div>
               </div>
             </React.Fragment>

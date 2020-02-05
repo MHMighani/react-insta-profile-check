@@ -14,8 +14,14 @@ const ValueStyler = (value, parameterChanged) => {
   }
 
   if (value.length === 1 && parseInt(value)) {
-    return <b>private</b>;
+    if(parameterChanged==="is_active"){
+      return <b>active</b>
+    }
+      return <b>private</b>;
   } else if (value.length === 1 && !parseInt(value)) {
+    if(parameterChanged==="is_active"){
+      return <b>deactive</b>
+    }
     return <b>public</b>;
   }
   return <b>{value}</b>;
