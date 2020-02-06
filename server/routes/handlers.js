@@ -108,7 +108,7 @@ router.all("/update",(req,res)=>{
 router.get('/changes',(req,res)=>{
   orm.getChangesHistory(function(err,changesHistory){
     if(err){
-      console.log("couldnt get user's change record")
+      console.log("couldnt get add changes record")
     }else{
       return res.json(changesHistory)
     }
@@ -122,6 +122,18 @@ router.get('/profile_images_history/:id',function(req,res){
   imagePaths = imageNames.map(imageName => serverPath + imageName)
   
   res.json(imagePaths)
+})
+
+router.get('/userChangesHistory/:id',(req,res)=>{
+  const user_id = req.params.id
+
+  orm.getChangesHistoryOfUser(user_id,function(err,changesHistory){
+    if(err){
+      console.log("couldnt get user change record")
+    }else{
+      return res.json(changesHistory)
+    }
+  })
 })
 
 module.exports = router

@@ -154,6 +154,22 @@ const orm = {
       if (err) cb(err, null);
       cb(null, data);
     });
+  },
+
+  getChangesHistoryOfUser: function(user_id,cb){
+    const sqlQuery = `
+      select t1.*,t2.username,t2.profile_pic_url
+      from instagram_change_history t1
+      left join insta_profile_info t2
+      on t1.user_id = t2.profile_id
+      where t1.user_id = ${user_id};
+    `;
+
+    connection.query(sqlQuery, function(err,data){
+      if(err) cb(err,null)
+      cb(null,data)
+    })
+
   }
 };
 

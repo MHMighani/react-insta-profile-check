@@ -9,6 +9,7 @@ import AllUsers from "./components/AllUsers";
 import ChangesHistory from "./components/ChangesHistory";
 import Navbar from "./components/Navbar";
 import ModalMessage from './components/ModalMessage'
+import ChangeHistoryOfUser from './components/ChangeHistoryOfUser'
 
 import Slider from "./components/slider/Slider";
 
@@ -27,6 +28,7 @@ export default class App extends Component {
             <Route exact path="/changes" component={ChangesHistory} />
             <Route exact path="/slider" component={Slider} />
             <Route path="/modalMessage/:action/:username/:id" component={ModalMessage} />
+            <Route path="/userChangesHistory/:id" component={ChangeHistoryOfUser} />
             {/* <Route component={Default} /> */}
           </div>
         </Router>

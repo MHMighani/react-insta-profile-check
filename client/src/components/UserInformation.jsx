@@ -6,9 +6,6 @@ import {Link} from 'react-router-dom'
 
 export default class UserInformation extends Component {  
   render() {
-    
-    
-
     const action = this.props.action
 
     const {
@@ -47,9 +44,12 @@ export default class UserInformation extends Component {
               {
                 is_active===0 &&
                 <label className="ui red ribbon label">Not Active</label>
-
               }
-              
+
+              <div class="floating ui red label">
+                <Link to={`/userChangesHistory/${profile_id}`}>changes</Link>
+              </div>
+
               <img src={profile_pic_url} alt="profile pic" />
             </div>
 
