@@ -17,7 +17,13 @@ const getCurrentDate = () => {
 const orm = {
   //retrieves all information
   selectAll: function(cb) {
-    const sqlQuery = `select * from insta_profile_info`;
+    const sqlQuery = `
+      select t1.*,count(t2.change_id) as total_change
+      from insta_profile_info t1
+      left join instagram_change_history t2
+      on t1.profile_id = t2.user_id
+      group by t1.profile_id;
+    `;
 
     connection.query(sqlQuery, function(err, data) {
       if (err) {

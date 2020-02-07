@@ -16,7 +16,8 @@ const DisplayAllUsers = props => {
         biography,
         external_url,
         is_private,
-        is_active
+        is_active,
+        total_change
       },
       index
     ) => {
@@ -45,7 +46,8 @@ const DisplayAllUsers = props => {
           info: profile_id
         },
         bio_is_active: 1,
-        is_active
+        is_active,
+        total_change
       };
 
       return (
@@ -105,6 +107,7 @@ export default class AllUsers extends Component {
   };
 
   render() {
+    
     return (
       <div className="ui container">
         <DisplayAllUsers
