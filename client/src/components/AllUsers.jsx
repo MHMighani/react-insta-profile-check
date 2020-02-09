@@ -51,7 +51,7 @@ const DisplayAllUsers = props => {
       };
 
       return (
-        <div key={index} className="four wide column">
+        <div key={index} className="sixteen wide phone eight wide tablet four wide computer column">
           <UserInformation
             action = "delete"
             userInformation={userInformation}
@@ -67,7 +67,7 @@ const DisplayAllUsers = props => {
     return <NoChangesComponent section="all_users" />;
   }
 
-  return <div className="ui celled grid">{all}</div>;
+  return <div className="ui four column celled grid">{all}</div>;
 };
 
 export default class AllUsers extends Component {
