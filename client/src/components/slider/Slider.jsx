@@ -12,6 +12,16 @@ export default class Slider extends Component {
     showModal: false
   };
 
+  getCurrentImageDate(currentImageName){
+    if(currentImageName){
+      const splitedName = currentImageName.split("_")
+      const timeStamp = splitedName[splitedName.length-1]
+      
+      return new Date(parseInt(timeStamp))
+    }
+    
+  }
+
   componentDidUpdate(){
     if(this.state.showModal!==this.props.showModal){
       
@@ -56,21 +66,25 @@ export default class Slider extends Component {
 
 
   render() {
+    const {currentImageIndex} = this.state
+    const {pics,toggleModal} = this.props
+
     return (
       <div className={this.modalShowClass()}>
         <div id="slider">
           <div id="mainSlider">
             <LeftArrow leftArrowFunction={this.goToPrevious} />
-            <Slide image={this.props.pics[this.state.currentImageIndex]} />
+            <Slide image={pics[currentImageIndex]} />
             <RightArrow
-              toggleModal={this.props.toggleModal}
+              toggleModal={toggleModal}
               rightArrowFunction={this.goToNext}
               closeButtonFunction={this.closeSlider}
             />
           </div>
           <SliderFooter
-            currentIndex={this.state.currentImageIndex}
-            numOfAllPics={this.props.pics.length}
+            currentIndex={currentImageIndex}
+            numOfAllPics={pics.length}
+            date={this.getCurrentImageDate(pics[currentImageIndex])}
           />
         </div>
       </div>

@@ -34,6 +34,11 @@ const nameOfMonthReturner = monthIndex => {
 
 const DateComponent = props => {
     const date = new Date(props.date)
+    
+    if(isNaN(date.getTime())){
+        return ""
+    }
+
     const dayOfWeek = nameOfDayReturner(date.getDay())
     const dayOfMonth = date.getDate()
     const month = nameOfMonthReturner(date.getMonth())

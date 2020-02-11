@@ -55,7 +55,7 @@ function findDifferences(oldUserInfo){
             
             let oldImageNameString = saveProfilePicsMethods.imageNameExtracter(oldUserInfo.profile_pic_url)
             let imageNameString = saveProfilePicsMethods.imageNameExtracter(info.profile_pic_url)
-            const imagePath = `./instagram_users_profile_pics/${info.profile_id}/${imageNameString}.jpg`
+            let imagePath = `./instagram_users_profile_pics/${info.profile_id}/${imageNameString}.jpg`
 
             if(!oldUserInfo.is_active){
                 changeObject.changes.push(
@@ -77,6 +77,10 @@ function findDifferences(oldUserInfo){
                     oldValue:oldUserInfo.profile_pic_url
                 }
                 )
+                //time when picture is saved
+                const now = new Date()
+                const timestamp = String(now.getTime())
+                imagePath = imagePath + "_" + timestamp
                 saveProfilePicsMethods.profileImgSaver(info.profile_pic_url,imagePath,function(){})
             }
             if(oldUserInfo.biography!==info.biography){

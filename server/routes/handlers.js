@@ -1,6 +1,5 @@
 const express = require("express")
 const router = express.Router()
-const axios = require("axios");
 const mkdirp = require("mkdirp")
 var fs = require('fs')
 
@@ -26,7 +25,11 @@ router.post("/add",(req,res)=>{
   const userInfo = req.body
   mkdirp(`./instagram_users_profile_pics/${userInfo.profile_id}`)
   
-  const imageName = saveProfilePicsMethods.imageNameExtracter(userInfo.profile_pic_url)
+  //time when picture is saved
+  const now = new Date()
+  const timestamp = String(now.getTime())
+
+  const imageName = saveProfilePicsMethods.imageNameExtracter(userInfo.profile_pic_url) + "_" +timestamp
   const imagePath = `./instagram_users_profile_pics/${userInfo.profile_id}/${imageName}.jpg`
   saveProfilePicsMethods.profileImgSaver(userInfo.profile_pic_url,imagePath,function(){
   });
