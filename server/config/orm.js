@@ -37,8 +37,9 @@ const orm = {
   addUser: function(userInfo, cb) {
     const profile_pic_url = userInfo.profile_pic_url;
     const userName = userInfo.userName;
-    const biography = userInfo.biography.split("\\").join("\\\\");
-    const fullName = userInfo.fullName.split("\\").join("\\\\");
+    let biography = userInfo.biography.split("\\").join("\\\\");
+    biography = biography.split(`'`).join(`\\'`);
+    let fullName = userInfo.fullName.split("\\").join("\\\\");
     const external_url = userInfo.external_url;
 
     let is_private = 0;
