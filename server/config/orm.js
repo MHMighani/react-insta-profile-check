@@ -59,7 +59,8 @@ const orm = {
          num_following,num_followers)
          values('${profile_id}','${userName}','${profile_pic_url}','${biography}',
                 '${fullName}','${is_private}','${external_url}','${num_following}','${num_followers}'
-         )`;
+         );
+         insert into profile_pic_history(profile_id,profile_pic_name) values('${profile_id}','${profile_pic_url}');`;
 
     connection.query(sqlQuery, function(err, data) {
       if (err) {
@@ -73,19 +74,13 @@ const orm = {
 
   //deleting a user
   deleteUser: function(userId, cb) {
-    sqlQuery1 = `delete from instagram_change_history where user_id=${userId}`;
+    sqlQuery = `
+                delete from instagram_change_history where user_id='${userId}';
+                delete from insta_profile_info where profile_id='${userId}';
+                delete from profile_pic_history where profile_id='${userId}';`;
 
-    connection.query(sqlQuery1, function(err, data) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("user history information completely deleted");
-      }
-    });
-
-    sqlQuery2 = `delete from insta_profile_info where profile_id='${userId}'`;
     const profile_pic_folder_path = "instagram_users_profile_pics";
-    connection.query(sqlQuery2, function(err, data) {
+    connection.query(sqlQuery, function(err, data) {
       if (err) {
         console.log(err);
         cb(err, null);
@@ -121,7 +116,14 @@ const orm = {
         column = change.parameterChanged;
         newValue = change.newValue;
         oldValue = change.oldValue;
-        return `insert into instagram_change_history(user_id,changed_parameter,old_value,new_value,date_modified) values('${userId}','${column}','${oldValue}','${newValue}','${date}')`;
+
+        let profilePicQuery = ""
+        const changeHistoryQuery = `insert into instagram_change_history(user_id,changed_parameter,old_value,new_value,date_modified) values('${userId}','${column}','${oldValue}','${newValue}','${date}');`
+        if(change.parameterChanged==="profile_pic_url"){
+          profilePicQuery = `insert into profile_pic_history(profile_id,profile_pic_name) 
+          values('${userId}','${newValue}');`  
+        }
+        return changeHistoryQuery + profilePicQuery
       });
 
       changeQuery = changeQuery.join(",");
@@ -129,8 +131,6 @@ const orm = {
       const historyQuery = historyChangeQuery.join(";");
 
       const mainInfoQuery = `update insta_profile_info\nset ${changeQuery}\nwhere profile_id = '${userId}';`;
-
-      // const historyQuery = `insert into instagram_change_history(user_id,changed_parameter,new_value,date_modified) values('${userId}','${column}','${newValue}','${date}');`
 
       const mainSqlQuery = mainInfoQuery + historyQuery;
 
@@ -176,7 +176,17 @@ const orm = {
       if(err) cb(err,null)
       cb(null,data)
     })
+  },
 
+  getProfilePicHistoryOfUser: function(profile_id,cb){
+    const sqlQuery = `
+      select * from profile_pic_history where profile_id='${profile_id};'
+    `
+
+    connection.query(sqlQuery, function(err,data){
+      if(err) cb(err,null)
+      cb(null,data)
+    })
   }
 };
 

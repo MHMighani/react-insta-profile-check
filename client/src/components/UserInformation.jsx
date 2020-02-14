@@ -8,12 +8,12 @@ export default class UserInformation extends Component {
   render() {
     const action = this.props.action
 
-    const {
+    let {
       profile_id,  
       username,
-      profile_pic_url,
       full_name,
       biography,
+      profile_pic_url,
       buttonText,
       is_private,
       external_url,
@@ -21,6 +21,10 @@ export default class UserInformation extends Component {
       is_active,
       total_change
     } = this.props.userInformation;
+
+    if(Object.keys(this.props.userInformation).includes("profile_pic_url_hd")){
+      profile_pic_url = this.props.userInformation.profile_pic_url_hd
+    }
 
     var external_url_tag = (
       <p style={{ color: "lightGrey", textDecoration: "italic" }}>

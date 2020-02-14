@@ -77,10 +77,7 @@ function findDifferences(oldUserInfo){
                     oldValue:oldUserInfo.profile_pic_url
                 }
                 )
-                //time when picture is saved
-                const now = new Date()
-                const timestamp = String(now.getTime())
-                imagePath = imagePath + "_" + timestamp
+                
                 saveProfilePicsMethods.profileImgSaver(info.profile_pic_url,imagePath,function(){})
             }
             if(oldUserInfo.biography!==info.biography){

@@ -3,6 +3,8 @@ import Slide from "./Slide";
 import LeftArrow from "./LeftArrow";
 import RightArrow from "./RightArrow";
 import SliderFooter from "./SliderFooter";
+import picNameExtractor from '../PicNameExtractor'
+
 
 import "./slider_style.css";
 
@@ -12,16 +14,6 @@ export default class Slider extends Component {
     showModal: false
   };
 
-  getCurrentImageDate(currentImageName){
-    if(currentImageName){
-      const splitedName = currentImageName.split("_")
-      const timeStamp = splitedName[splitedName.length-1]
-      
-      return new Date(parseInt(timeStamp))
-    }
-    
-  }
-
   componentDidUpdate(){
     if(this.state.showModal!==this.props.showModal){
       
@@ -30,9 +22,25 @@ export default class Slider extends Component {
     
   }
 
+  getCurrentImageDate(){
+    const currentImageIndex = this.state.currentImageIndex
+    let currentImageDate = ""
+    
+    if(this.props.pics.length){
+      currentImageDate = this.props.pics[currentImageIndex].pic_date
+    }
+    
+    return currentImageDate
+  }
+
   getCurrentImage() {
     const index = this.state.currentImageIndex;
-    const currentImage = this.state.images[index];
+    const currentPic = this.props.pics[index]
+    let currentImage = ""
+
+    if(this.props.pics.length){
+      currentImage = currentPic.profile_id + "/" + picNameExtractor(currentPic.profile_pic_name) + ".jpg"
+    }
 
     return currentImage;
   }
@@ -74,7 +82,7 @@ export default class Slider extends Component {
         <div id="slider">
           <div id="mainSlider">
             <LeftArrow leftArrowFunction={this.goToPrevious} />
-            <Slide image={pics[currentImageIndex]} />
+            <Slide image={this.getCurrentImage()} />
             <RightArrow
               toggleModal={toggleModal}
               rightArrowFunction={this.goToNext}
@@ -84,7 +92,7 @@ export default class Slider extends Component {
           <SliderFooter
             currentIndex={currentImageIndex}
             numOfAllPics={pics.length}
-            date={this.getCurrentImageDate(pics[currentImageIndex])}
+            date={this.getCurrentImageDate()}
           />
         </div>
       </div>

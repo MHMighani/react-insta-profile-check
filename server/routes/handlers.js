@@ -24,12 +24,8 @@ router.get("/all",(req,res)=>{
 router.post("/add",(req,res)=>{
   const userInfo = req.body
   mkdirp(`./instagram_users_profile_pics/${userInfo.profile_id}`)
-  
-  //time when picture is saved
-  const now = new Date()
-  const timestamp = String(now.getTime())
 
-  const imageName = saveProfilePicsMethods.imageNameExtracter(userInfo.profile_pic_url) + "_" +timestamp
+  const imageName = saveProfilePicsMethods.imageNameExtracter(userInfo.profile_pic_url)
   const imagePath = `./instagram_users_profile_pics/${userInfo.profile_id}/${imageName}.jpg`
   saveProfilePicsMethods.profileImgSaver(userInfo.profile_pic_url,imagePath,function(){
   });
@@ -121,10 +117,18 @@ router.get('/changes',(req,res)=>{
 router.get('/profile_images_history/:id',function(req,res){
   userId = req.params.id
   const serverPath = `http://localhost:4000/static/${userId}/`
-  const imageNames = fs.readdirSync(`instagram_users_profile_pics/${userId}`)
-  imagePaths = imageNames.map(imageName => serverPath + imageName)
+  // const imageNames = fs.readdirSync(`instagram_users_profile_pics/${userId}`)
+  // imagePaths = imageNames.map(imageName => serverPath + imageName)
   
-  res.json(imagePaths)
+  // res.json(imagePaths)
+
+  orm.getProfilePicHistoryOfUser(userId,function(err,profilePicHistory){
+    if(err){
+      console.log("couldnt get user profile pic history")
+    }else{
+      return res.json(profilePicHistory)
+    }
+  })
 })
 
 router.get('/userChangesHistory/:id',(req,res)=>{
