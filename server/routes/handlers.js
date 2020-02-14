@@ -143,4 +143,29 @@ router.get('/userChangesHistory/:id',(req,res)=>{
   })
 })
 
+router.get('/deleteUserPicture/:user_id/:picture_name/:pic_history_id',(req,res)=>{
+  const user_id = req.params.user_id
+  const picture_name = req.params.picture_name
+  const pic_history_id = req.params.pic_history_id
+
+  console.log(user_id,picture_name)
+
+  const path = `./instagram_users_profile_pics/${user_id}/${picture_name}`
+
+  fs.unlink(path, (err) => {
+    if (err) {
+      console.error(err)
+      return
+    }
+    
+    orm.deleteSinglePicture(pic_history_id,function(err,data){
+      if(err){
+        console.log(`couldnt delete ${picture_name}`)
+      }else{
+        console.log(`${picture_name} successfully deleted!}`)
+      }
+    })
+  })
+})
+
 module.exports = router

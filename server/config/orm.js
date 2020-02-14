@@ -187,6 +187,16 @@ const orm = {
       if(err) cb(err,null)
       cb(null,data)
     })
+  },
+
+  deleteSinglePicture: function(pic_history_id,cb){
+    const sqlQuery = `
+      delete from profile_pic_history where id=${pic_history_id};
+    `
+    connection.query(sqlQuery, function(err,data){
+      if(err) cb(err,null)
+      cb(null,data)
+    })
   }
 };
 

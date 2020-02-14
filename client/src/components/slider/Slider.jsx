@@ -4,6 +4,7 @@ import LeftArrow from "./LeftArrow";
 import RightArrow from "./RightArrow";
 import SliderFooter from "./SliderFooter";
 import picNameExtractor from '../PicNameExtractor'
+import {deleteUserPicture} from '../../api/api'
 
 
 import "./slider_style.css";
@@ -18,6 +19,18 @@ export default class Slider extends Component {
     if(this.state.showModal!==this.props.showModal){
       
       this.setState({currentImageIndex:0,showModal:this.props.showModal})
+    }
+    
+  }
+
+  deleteButtonOnClick() {
+    if(this.props.pics.length){
+      const currentImageIndex = this.state.currentImageIndex
+      const user_id = this.props.pics[currentImageIndex].profile_id
+      const currentImageName = picNameExtractor(this.props.pics[currentImageIndex].profile_pic_name) + ".jpg"
+      const currentImageHistoryId = this.props.pics[currentImageIndex].id
+      
+      deleteUserPicture(user_id,currentImageName,currentImageHistoryId)
     }
     
   }
@@ -90,6 +103,7 @@ export default class Slider extends Component {
             />
           </div>
           <SliderFooter
+            deleteButtonOnClick = {()=>this.deleteButtonOnClick()}
             currentIndex={currentImageIndex}
             numOfAllPics={pics.length}
             date={this.getCurrentImageDate()}

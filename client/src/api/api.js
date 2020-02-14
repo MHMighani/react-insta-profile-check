@@ -100,6 +100,15 @@ const getHistoryChangeOfUser = async (profile_id) => {
     return response.data
 }
 
+const deleteUserPicture = async (user_id,picture_name,pic_history_id) => {
+    console.log(user_id,picture_name)
+    let url = `${serverAddress}/deleteUserPicture/${user_id}/${picture_name}/${pic_history_id}`
+
+    const response = await axios.get(url)
+
+
+}
+
 
 export {
     getAllUsersInfo,
@@ -110,5 +119,6 @@ export {
     updateUsersChanges,
     getChangesHistory,
     profilePicsHistoryOfUser,
-    getHistoryChangeOfUser
+    getHistoryChangeOfUser,
+    deleteUserPicture
 }
