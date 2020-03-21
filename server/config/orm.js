@@ -39,6 +39,7 @@ const orm = {
     const userName = userInfo.userName;
     let biography = userInfo.biography.split("\\").join("\\\\");
     biography = biography.split(`'`).join(`\\'`);
+    // biography = biography.split(`,`).join(`\\,`);
     let fullName = userInfo.fullName.split("\\").join("\\\\");
     const external_url = userInfo.external_url;
 
