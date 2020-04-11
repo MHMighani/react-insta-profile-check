@@ -31,7 +31,6 @@ function findDifferences(oldUserInfo){
                 profile_pic_url: info.profile_pic_url,
                 changes:[]
             }
-
             
             if(info.userNotFound && oldUserInfo.is_active===1){
                 const changeObject = {
@@ -45,14 +44,11 @@ function findDifferences(oldUserInfo){
                         oldValue:"1"
                     }]
                 }
-
                 return changeObject
             }else if(info.userNotFound && oldUserInfo.is_active===0){
                 return changeObject
             }
 
-            
-            
             let oldImageNameString = saveProfilePicsMethods.imageNameExtracter(oldUserInfo.profile_pic_url)
             let imageNameString = saveProfilePicsMethods.imageNameExtracter(info.profile_pic_url)
             let imagePath = `./instagram_users_profile_pics/${info.profile_id}/${imageNameString}.jpg`
@@ -85,7 +81,7 @@ function findDifferences(oldUserInfo){
                     {
                     parameterChanged:"biography",
                     changeText:"biography",
-                    newValue:info.biography.split('\\').join('\\\\'),
+                    newValue:info.biography.split('\\').join('\\\\').split(`'`).join(`\\'`),
                     oldValue:oldUserInfo.biography
                     }
                 )

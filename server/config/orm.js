@@ -144,7 +144,7 @@ const orm = {
       if (err) {
         console.log(err);
 
-        cb(err, null);
+        return cb(err, null);
       }
       cb(null, data);
     });

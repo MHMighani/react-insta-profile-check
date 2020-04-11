@@ -50,7 +50,7 @@ router.get("/timeline",(req,res)=>{
   
   orm.selectAll(function(err,usersInfo){
     if(err){
-      res.status(501).json({
+      return res.status(501).json({
         message:"couldnt connect to database"
       })}
 
@@ -73,7 +73,6 @@ router.get("/timeline",(req,res)=>{
         
     }    
   )
-  
 })
 
 router.delete("/delete/:id",function(req,res){  
