@@ -17,6 +17,8 @@ const ChangeHistoryList = ({ changeHistoryArray }) => {
           old_Value,
           new_Value
         }) => {
+          profile_pic_url = "http://localhost:4000/static/" + user_id + "/" + PicNameExtractor(profile_pic_url) + ".jpg"
+
           if (changed_parameter === "is_private") {
             changed_parameter = "privacy status";
           }
