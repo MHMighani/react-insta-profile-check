@@ -1,7 +1,6 @@
 import React from 'react'
 
-const UserNameNotFound = props => {
-    const username = props.username
+const UserNameNotFound = ({username}) => {
     return(
         <div className="ui placeholder segment container">
             <div className="ui icon large header">

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Slide({image}) {
+const Slide = ({image}) => {
     const imageAddress = `http://localhost:4000/static/` + image
 
     return (
@@ -9,3 +9,5 @@ export default function Slide({image}) {
         </div>
     )
 }
+
+export default Slide

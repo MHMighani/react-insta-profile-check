@@ -1,115 +1,103 @@
-import React, { Component } from "react";
-import Slide from "./Slide";
-import LeftArrow from "./LeftArrow";
-import RightArrow from "./RightArrow";
-import SliderFooter from "./SliderFooter";
-import picNameExtractor from '../PicNameExtractor'
-import {deleteUserPicture} from '../../api/api'
+import React, { useEffect, useState } from 'react';
+import Slide from './Slide';
+import LeftArrow from './LeftArrow';
+import RightArrow from './RightArrow';
+import SliderFooter from './SliderFooter';
+import picNameExtractor from '../PicNameExtractor';
+import { deleteUserPicture } from '../../api/api';
 
+import './slider_style.css';
 
-import "./slider_style.css";
-
-export default class Slider extends Component {
-  state = {
-    currentImageIndex: 0,
-    showModal: false
-  };
-
-  componentDidUpdate(){
-    if(this.state.showModal!==this.props.showModal){
-      
-      this.setState({currentImageIndex:0,showModal:this.props.showModal})
+const Slider = (props) => {
+	
+  const { pics, toggleModal } = props;
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  
+	useEffect(() => {
+		if (showModal !== props.showModal) {
+			setShowModal(props.showModal);
+			setCurrentImageIndex(0);
     }
-    
-  }
+    return () => setCurrentImageIndex(0)
+	}, [props.showModal]);
 
-  deleteButtonOnClick() {
-    if(this.props.pics.length){
-      const currentImageIndex = this.state.currentImageIndex
-      const user_id = this.props.pics[currentImageIndex].profile_id
-      const currentImageName = picNameExtractor(this.props.pics[currentImageIndex].profile_pic_name) + ".jpg"
-      const currentImageHistoryId = this.props.pics[currentImageIndex].id
-      
-      deleteUserPicture(user_id,currentImageName,currentImageHistoryId)
-    }
-    
-  }
+	const deleteButtonOnClick = () => {
+		if (pics.length > 0) {
+			const user_id = pics[currentImageIndex].profile_id;
+			const currentImageName = `${picNameExtractor(pics[currentImageIndex].profile_pic_name)}.jpg`;
+			const currentImageHistoryId = pics[currentImageIndex].id;
 
-  getCurrentImageDate(){
-    const currentImageIndex = this.state.currentImageIndex
-    let currentImageDate = ""
-    
-    if(this.props.pics.length){
-      currentImageDate = this.props.pics[currentImageIndex].pic_date
-    }
-    
-    return currentImageDate
-  }
+			deleteUserPicture(user_id, currentImageName, currentImageHistoryId);
+		}
+	};
 
-  getCurrentImage() {
-    const index = this.state.currentImageIndex;
-    const currentPic = this.props.pics[index]
-    let currentImage = ""
+	const getCurrentImageDate = () => {
+		let currentImageDate = pics.length > 0 ? pics[currentImageIndex].pic_date : '';
 
-    if(this.props.pics.length){
-      currentImage = currentPic.profile_id + "/" + picNameExtractor(currentPic.profile_pic_name) + ".jpg"
-    }
+		return currentImageDate;
+	};
 
-    return currentImage;
-  }
+	const getCurrentImage = () => {
+		const currentPic = pics[currentImageIndex];
 
-  goToPrevious = () => {
-    if (this.state.currentImageIndex === 0) {
-      return;
-    } else {
-      this.setState({ currentImageIndex: this.state.currentImageIndex - 1 });
-    }
-  };
+		let currentImage =
+			pics.length > 0
+				? `${currentPic.profile_id}/${picNameExtractor(currentPic.profile_pic_name)}.jpg`
+				: '';
 
-  goToNext = () => {
-    if (this.state.currentImageIndex === this.props.pics.length - 1) {
-      return;
-    } else {
-      this.setState({ currentImageIndex: this.state.currentImageIndex + 1 });
-    }
-  };
+		return currentImage;
+	};
 
-  closeSlider = () => {
-    this.setState({modalShowClass: "modal-display-none"})
-  };
+	const goToPrevious = () => {
+		if (currentImageIndex > 0) {
+			setCurrentImageIndex(currentImageIndex - 1);
+		}else if(currentImageIndex === 0){
+			setCurrentImageIndex(pics.length - 1);
+		}
+	};
 
-  modalShowClass = () => {
-    if(this.state.showModal){
-      return "modal-display-block"
-    }
-    return "modal-display-none"
-  }
+	const goToNext = () => {
+		if (currentImageIndex !== pics.length - 1) {
+			setCurrentImageIndex(currentImageIndex + 1);
+		}else if(currentImageIndex === pics.length - 1){
+			setCurrentImageIndex(0)
+		}
+	};
 
+	const closeSlider = () => {
+		this.setState({ modalShowClass: 'modal-display-none' });
+	};
 
-  render() {
-    const {currentImageIndex} = this.state
-    const {pics,toggleModal} = this.props
+	const modalShowClass = () => {
+		let modalShowClass = showModal ? 'modal-display-block' : 'modal-display-none';
 
-    return (
-      <div className={this.modalShowClass()}>
-        <div id="slider">
-          <div id="mainSlider">
-            <LeftArrow leftArrowFunction={this.goToPrevious} />
-            <Slide image={this.getCurrentImage()} />
-            <RightArrow
-              toggleModal={toggleModal}
-              rightArrowFunction={this.goToNext}
-              closeButtonFunction={this.closeSlider}
-            />
-          </div>
-          <SliderFooter
-            deleteButtonOnClick = {()=>this.deleteButtonOnClick()}
-            currentIndex={currentImageIndex}
-            numOfAllPics={pics.length}
-            date={this.getCurrentImageDate()}
-          />
-        </div>
-      </div>
-    );
-  }
-}
+		return modalShowClass;
+	};
+
+	
+
+	return (
+		<div className={modalShowClass()}>
+			<div id="slider">
+				<div id="mainSlider">
+					<LeftArrow leftArrowFunction={goToPrevious} />
+					<Slide image={getCurrentImage()} />
+					<RightArrow
+						toggleModal={toggleModal}
+						rightArrowFunction={goToNext}
+						closeButtonFunction={closeSlider}
+					/>
+				</div>
+				<SliderFooter
+					deleteButtonOnClick={() => deleteButtonOnClick()}
+					currentIndex={currentImageIndex}
+					numOfAllPics={pics.length}
+					date={getCurrentImageDate()}
+				/>
+			</div>
+		</div>
+	);
+};
+
+export default Slider;

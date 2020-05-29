@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function closeButton({toggleModal}) {
+const CloseButton = ({toggleModal}) => {
     return (
         <div id="slider-closeButton">
             <button onClick={toggleModal}>
@@ -10,3 +10,5 @@ export default function closeButton({toggleModal}) {
         </div>
     )
 }
+
+export default CloseButton

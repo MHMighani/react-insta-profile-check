@@ -1,7 +1,7 @@
 import React from 'react'
 import CloseButton from './CloseButton'
 
-export default function RightArrow({rightArrowFunction,closeButtonFunction,toggleModal}) {
+const RightArrow = ({rightArrowFunction,closeButtonFunction,toggleModal}) => {
     return (
         <div className="arrow right">
             <CloseButton toggleModal={toggleModal} closeButtonFunction={closeButtonFunction} />
@@ -13,3 +13,5 @@ export default function RightArrow({rightArrowFunction,closeButtonFunction,toggl
         </div>
     )
 }
+
+export default RightArrow

@@ -1,122 +1,44 @@
-import React, { Component } from "react";
-import { getAllUsersInfo, deleteUser } from "../api/api.js";
-import UserInformation from "./UserInformation";
-import NoChangesComponent from "./NoChangesComponent";
-import Slider from './slider/Slider'
-import {profilePicsHistoryOfUser} from '../api/api'
+import React, { useState, useEffect } from 'react';
+import { getAllUsersInfo, deleteUser } from '../api/api.js';
+import Slider from './slider/Slider';
+import DisplayAllUsers from './DisplayAllUsers';
+import { profilePicsHistoryOfUser } from '../api/api';
 
-const DisplayAllUsers = props => {
-  const all = props.allUsers.map(
-    (
-      {
-        full_name,
-        profile_id,
-        username,
-        profile_pic_url,
-        biography,
-        external_url,
-        is_private,
-        is_active,
-        total_change
-      },
-      index
-    ) => {
-      //checking if user has Name or not
-      if (full_name === "") {
-        full_name = (
-          <div className="meta" style={{ color: "red" }}>
-            No Name
-          </div>
-        );
-      } else {
-        full_name = <div className="meta">{full_name}</div>;
-      }
+const AllUsers = () => {
+	const [userData, setUserData] = useState([]);
+	const [profilePicsHistory, setProfilePicsHistory] = useState([]);
+	const [showModal, setShowModal] = useState(false);
 
-      const userInformation = {
-        profile_id,
-        username,
-        profile_pic_url,
-        biography,
-        full_name,
-        external_url,
-        is_private,
-        buttonText: {
-          text: "Delete",
-          icon: "delete icon",
-          info: profile_id
-        },
-        bio_is_active: 1,
-        is_active,
-        total_change
-      };
+	useEffect(() => {
+		const fetch = async () => {
+			const savedUsersInformation = await getAllUsersInfo();
+			setUserData(savedUsersInformation);
+		};
+		fetch();
+	}, []);
 
-      return (
-        <div key={index} className="sixteen wide phone eight wide tablet four wide computer column">
-          <UserInformation
-            action = "delete"
-            userInformation={userInformation}
-            buttonFunc={props.deleteOne}
-            imageClickedFunc={props.imageClickedFunc}
-          />
-        </div>
-      );
-    }
-  );
+	const toggleModal = () => {
+		setShowModal(!showModal);
+	};
 
-  if (all.length === 0) {
-    return <NoChangesComponent section="all_users" />;
-  }
+	const deleteOne = (userId) => {
+		deleteUser(userId);
+		const filteredData = userData.filter((user) => user.profile_id !== userId);
+		setUserData(filteredData);
+	};
 
-  return <div className="ui four column celled grid">{all}</div>;
+	const imageClicked = async (profile_id) => {
+		const profilePics = await profilePicsHistoryOfUser(profile_id);
+		setProfilePicsHistory(profilePics);
+		toggleModal();
+	};
+
+	return (
+		<div className="ui container">
+			<DisplayAllUsers allUsers={userData} deleteOne={deleteOne} imageClickedFunc={imageClicked} />
+			<Slider showModal={showModal} toggleModal={toggleModal} pics={profilePicsHistory} />
+		</div>
+	);
 };
 
-export default class AllUsers extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { userData: [], profilePicsHistory:[], showModal:false };
-  }
-
-  async componentDidMount() {
-    
-    const savedUsersInformation = await getAllUsersInfo();
-
-    this.setState({ userData: savedUsersInformation })
-
-  }
-
-  toggleModal = () => {
-    this.setState({showModal:!this.state.showModal})
-  }
-
-  deleteOne = userId => {
-    deleteUser(userId);
-
-    this.setState({
-      userData: this.state.userData.filter(user => {
-        return user.profile_id !== userId;
-      })
-    });
-  };
-
-  imageClicked = async profile_id => {
-    const profilePics = await profilePicsHistoryOfUser(profile_id)
-    this.setState({profilePicsHistory: profilePics})
-    this.toggleModal()
-    
-  };
-
-  render() {
-    
-    return (
-      <div className="ui container">
-        <DisplayAllUsers
-          allUsers={this.state.userData}
-          deleteOne={this.deleteOne}
-          imageClickedFunc={this.imageClicked}
-        />
-        <Slider showModal={this.state.showModal} toggleModal={this.toggleModal} pics={this.state.profilePicsHistory} />
-      </div>
-    );
-  }
-}
+export default AllUsers;

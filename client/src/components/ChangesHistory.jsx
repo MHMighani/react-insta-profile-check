@@ -1,35 +1,25 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from 'react';
 
-import { getChangesHistory } from "../api/api";
-import NoChangesComponent from './NoChangesComponent'
-import ChangeHistoryList from './ChangeHistoryList'
+import { getChangesHistory } from '../api/api';
+import NoChangesComponent from './NoChangesComponent';
+import ChangeHistoryList from './ChangeHistoryList';
 
+const ChangesHistory = () => {
+	const [changeHistory, setChangeHistory] = useState([]);
 
-class ChangesHistory extends Component {
-  constructor(props) {
-    super(props);
+	useEffect(() => {
+		const fetchData = async () => {
+			const changesHistoryList = await getChangesHistory();
+			setChangeHistory(changesHistoryList);
+		};
+		fetchData();
+	}, []);
 
-    this.state = { changesHistory: [] };
-  }
+	if (changeHistory.length > 0) {
+		return <ChangeHistoryList changeHistoryArray={changeHistory} />;
+	}
 
-  async componentDidMount() {
-    const changesHistoryList = await getChangesHistory();
-    this.setState({ changesHistory: changesHistoryList });
-  }
-
-  render() {
-    const changeHistoryLength = this.state.changesHistory.length;
-
-    if (changeHistoryLength > 0) {
-      return (
-        <ChangeHistoryList changeHistoryArray={this.state.changesHistory} />
-      );
-    }
-
-    return (
-      <NoChangesComponent section="changes" />
-    );
-  }
-}
+	return <NoChangesComponent section="changes" />;
+};
 
 export default ChangesHistory;

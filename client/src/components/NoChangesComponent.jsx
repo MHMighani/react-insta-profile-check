@@ -1,8 +1,8 @@
 import React from 'react'
 
 const NoChangesComponent = ({section}) => {
-    let iconExpression = ""
-    let text = ""
+    let iconExpression,text
+    
   
     switch(section){
         case "timeline":

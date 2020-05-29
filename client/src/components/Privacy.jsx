@@ -1,17 +1,13 @@
-import React from 'react'
+import React from 'react';
 
-export default function Privacy(props) {
-    let privacyLabel = ""
-    
-    if(props.is_private){
-        privacyLabel = <div className="ui red medium circular label"><i className="icon lock"></i>Locked</div>
-    }else{
-        privacyLabel = <div className="ui green medium circular label"><i className="icon lock open"></i>Open</div>
-    }
+const Privacy = ({ is_private }) => {
+	let privacyLabel = (
+		<div className={`ui ${is_private ? 'red' : 'green'} medium circular label`}>
+			<i className={`icon lock ${is_private ? '' : 'open'}`}></i>
+			{is_private ? 'locked' : 'open'}
+		</div>
+	);
+	return <div className="privacySection">{privacyLabel}</div>;
+};
 
-    return(
-        <div className="privacySection">
-            {privacyLabel}
-        </div>
-    )
-}
+export default Privacy;

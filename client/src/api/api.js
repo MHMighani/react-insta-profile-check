@@ -1,124 +1,104 @@
-import axios from 'axios'
+import axios from 'axios';
 
-var serverAddress = `http://localhost:4000`
+var serverAddress = `http://localhost:4000`;
 
-const getAllUsersInfo = async () => {
-    let url = `${serverAddress}/all`
+export const getAllUsersInfo = async () => {
+	let url = `${serverAddress}/all`;
 
-    const response = await axios.get(url)
-    const data = await response.data.data
+	const response = await axios.get(url);
+	const data = await response.data.data;
 
-    return data
-}
+	return data;
+};
 
+export const getUserDataFromInstagram = async (username) => {
+	let url = `https://www.instagram.com/${username}/?__a=1`;
+	let data
+	try {
+		const response = await axios.get(url);
+		data = await response.data;
 
-const getUserDataFromInstagram = async (username) => {
-    let url = `https://www.instagram.com/${username}/?__a=1`
-    
-    try{
-        const response = await axios.get(url)
-        const data = await response.data
+	} catch (error) {
+		data = { error: true };		
+	} finally{
+		return data
+	}
+};
 
-        return data
-    }catch(error){
-        const data = {error:true}
-        return data
-    }
-    
-}
+export const addNewUserToDatabase = async (userId) => {
+	const response = await getUserDataFromInstagram(userId);
+	const userInfo = response.graphql.user;
 
-const addNewUserToDatabase = async (userId) => {
-    const response = await getUserDataFromInstagram(userId)
-    const userInfo = response.graphql.user
-    
-    const userData= {
-        profile_pic_url: userInfo.profile_pic_url_hd,
-        userName: userInfo.username,
-        biography: userInfo.biography,
-        fullName: userInfo.full_name,
-        is_private: userInfo.is_private,
-        profile_id: userInfo.id,
-        external_url: userInfo.external_url?userInfo.external_url:"",
-        num_following: userInfo.edge_follow,
-        num_followers: userInfo.edge_followed_by
-    }
+	const {
+		profile_pic_url_hd: profile_pic_url,
+		username: userName,
+		full_name: fullName,
+		is_private,
+		id: profile_id,
+		external_url = '',
+		edge_follow: num_following,
+	} = userInfo;
 
-    let url = `${serverAddress}/add`
+	const userData = { profile_pic_url, userName, fullName, is_private, profile_id, external_url, num_following };
 
-    try{
-        const response = await axios.post(url,userData)
-        const SuccessStatus = await response.data
-        return SuccessStatus
-    }catch(error){
-        const FailedStatus = {type:"error",errno:1062}
-        return FailedStatus
-    }
-}
+	let url = `${serverAddress}/add`;
 
-const deleteUser = async (userId) => {
-    let url = `${serverAddress}/delete/${userId}`
+	try {
+		const response = await axios.post(url, userData);
+		const SuccessStatus = await response.data;
+		return SuccessStatus;
+	} catch (error) {
+		return { type: 'error', errno: 1062 };
+	}
+};
 
-    await axios.delete(url)
-}
+export const deleteUser = async (userId) => {
+	let url = `${serverAddress}/delete/${userId}`;
 
-const getUsersChanges = async () => {
-    let url = `${serverAddress}/timeline`
-    
-    const response = await axios.get(url)
-    const data = await response.data
-    
-    return data
-}
+	await axios.delete(url);
+};
 
-const updateUsersChanges = async (users_changes) => {
-    let url = `${serverAddress}/update`
+export const getUsersChanges = async () => {
+	let url = `${serverAddress}/timeline`;
 
-    await axios.post(url,users_changes)
-}
+	const response = await axios.get(url);
+	const data = await response.data;
 
-const getChangesHistory = async () => {
-    let url = `${serverAddress}/changes`
+	return data;
+};
 
-    const response = await axios.get(url)
-    
-    return response.data
-}
+export const updateUsersChanges = async (users_changes) => {
+	let url = `${serverAddress}/update`;
 
-const profilePicsHistoryOfUser = async (profile_id) => {
-    let url = `${serverAddress}/profile_images_history/${profile_id}`
+	await axios.post(url, users_changes);
+};
 
-    const response = await axios.get(url)
+export const getChangesHistory = async () => {
+	let url = `${serverAddress}/changes`;
 
-    return response.data
-}
+	const response = await axios.get(url);
 
-const getHistoryChangeOfUser = async (profile_id) => {
-    let url = `${serverAddress}/userChangesHistory/${profile_id}`
+	return response.data;
+};
 
-    const response = await axios.get(url)
+export const profilePicsHistoryOfUser = async (profile_id) => {
+	let url = `${serverAddress}/profile_images_history/${profile_id}`;
 
-    return response.data
-}
+	const response = await axios.get(url);
 
-const deleteUserPicture = async (user_id,picture_name,pic_history_id) => {
-    console.log(user_id,picture_name)
-    let url = `${serverAddress}/deleteUserPicture/${user_id}/${picture_name}/${pic_history_id}`
+	return response.data;
+};
 
-    const response = await axios.get(url)
+export const getHistoryChangeOfUser = async (profile_id) => {
+	let url = `${serverAddress}/userChangesHistory/${profile_id}`;
 
+	const response = await axios.get(url);
 
-}
+	return response.data;
+};
 
+export const deleteUserPicture = async (user_id, picture_name, pic_history_id) => {
+	let url = `${serverAddress}/deleteUserPicture/${user_id}/${picture_name}/${pic_history_id}`;
 
-export {
-    getAllUsersInfo,
-    getUserDataFromInstagram,
-    addNewUserToDatabase,
-    deleteUser,
-    getUsersChanges,
-    updateUsersChanges,
-    getChangesHistory,
-    profilePicsHistoryOfUser,
-    getHistoryChangeOfUser,
-    deleteUserPicture
-}
+	await axios.get(url);
+};

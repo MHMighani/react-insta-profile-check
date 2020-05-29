@@ -1,51 +1,45 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { getUserDataFromInstagram as getuser } from "../api/api.js";
 import UserInformation from "./UserInformation";
 import UserNameNotFound from "./UserNameNotFound";
 
-export default class AddNewUser extends Component {
-  state = {
-    username: "",
-    info: "",
-    notFoundStatus: false,
-    resultMessage: { type: "", errno: null }
-  };
+const AddNewUser = () => {
+  const [username,setUsername] = useState('');
+  const [info,setInfo] = useState('');
+  const [notFoundStatus,setNotFoundStatus] = useState(false);
 
-  getUserData = async username => {
+  console.log(info)
+
+  const getUserData = async username => {
     let userInfo = await getuser(username);
 
     if (userInfo.error) {
-      this.setState({ notFoundStatus: true, username });
+      setNotFoundStatus(true)
+      setUsername(username)
       return;
     }
 
-    if (typeof userInfo.graphql === "undefined") {
+    if (!userInfo.graphql) {
       return;
     } else {
       userInfo = userInfo.graphql;
     }
     if (typeof userInfo.user === "object") {
       userInfo = userInfo.user;
-      this.setState({
-        info: {
-          ...userInfo,
-          buttonText: { text: "Add User", icon: "icon add" }
-        },
-        notFoundStatus: false
-      });
+      setInfo({...userInfo,buttonText: { text: "Add User", icon: "icon add" }})
+      setNotFoundStatus(false)
     }
   };
 
-  render() {
-    let resultBox = <div></div>;
-    if (this.state.notFoundStatus) {
+    let resultBox ;
+    if (notFoundStatus) {
       resultBox = resultBox = (
-        <UserNameNotFound username={this.state.username} />
+        <UserNameNotFound username={username} />
       );
     } else {
       resultBox = (
         <div className="ui cards">
-          <UserInformation action="add" userInformation={this.state.info} />
+          <UserInformation action="add" userInformation={info} />
         </div>
       );
     }
@@ -58,7 +52,7 @@ export default class AddNewUser extends Component {
               type="text"
               id="newUsernameInput"
               placeholder="Search user..."
-              onChange={event => this.getUserData(event.target.value)}
+              onChange={event => getUserData(event.target.value)}
               style={{ border: "1px solid black" }}
               autoComplete="off"
             ></input>
@@ -71,4 +65,5 @@ export default class AddNewUser extends Component {
       </div>
     );
   }
-}
+
+export default AddNewUser
