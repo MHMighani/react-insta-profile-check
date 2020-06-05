@@ -25,30 +25,17 @@ export const getUserDataFromInstagram = async (username) => {
 	}
 };
 
-export const addNewUserToDatabase = async (userId) => {
-	const response = await getUserDataFromInstagram(userId);
-	const userInfo = response.graphql.user;
+export const addNewUserToDatabase = async (username) => {
+	let url = `${serverAddress}/add/${username}`;
 
-	const {
-		profile_pic_url_hd: profile_pic_url,
-		username: userName,
-		full_name: fullName,
-		is_private,
-		id: profile_id,
-		external_url = '',
-		edge_follow: num_following,
-	} = userInfo;
-
-	const userData = { profile_pic_url, userName, fullName, is_private, profile_id, external_url, num_following };
-
-	let url = `${serverAddress}/add`;
-
+	let response
 	try {
-		const response = await axios.post(url, userData);
-		const SuccessStatus = await response.data;
-		return SuccessStatus;
+		const response = await axios.post(url);
+		response = await response.data;
 	} catch (error) {
-		return { type: 'error', errno: 1062 };
+		response  = { type: 'error', errno: 1062 };
+	} finally {
+		return response
 	}
 };
 
