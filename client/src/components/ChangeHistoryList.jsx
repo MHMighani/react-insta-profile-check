@@ -18,9 +18,10 @@ const ChangeHistoryList = ({ changeHistoryArray }) => {
 				old_Value,
 				new_Value,
 			}) => {
+				const profileLinkAddress = `https://www.instagram.com/${username}/`
 				profile_pic_url = `http://localhost:4000/static/${user_id}/${PicNameExtractor(profile_pic_url)}.jpg`;
 				const userLink = (
-					<a href={`https://www.instagram.com/${username}/`} rel="noopener noreferrer" target="_blank">
+					<a href={profileLinkAddress} rel="noopener noreferrer" target="_blank">
 						{username}
 					</a>
 				);

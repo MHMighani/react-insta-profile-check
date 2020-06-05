@@ -5,7 +5,7 @@ const ProfilePicComponent = ({size='tiny',imageAddress,username = ''}) => {
 		<img
 			className={`ui avatar image ${size}`}
 			src={imageAddress}
-			alt={`${username}'s old profile pic`}
+			alt={`${username}'s profile pic`}
 			style={{ margin: '0 1rem' }}
 		/>
 	);

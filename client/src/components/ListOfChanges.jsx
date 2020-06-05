@@ -1,11 +1,13 @@
 import React from 'react';
 import ValueStyler from './ValueStyler';
 import ProfilePicComponent from './ProfilePicComponent';
+import PicNameExtractor from './PicNameExtractor';
 
 const ListOfChanges = (props) => {
-	return props.users.map(({ userId, profile_pic_url, username, changes }) => {
+	return props.users.map(({ profile_id, profile_pic_url, username, changes }) => {
+		profile_pic_url = `http://localhost:4000/static/${profile_id}/${PicNameExtractor(profile_pic_url)}.jpg`;
 		return (
-			<div className="item" key={userId}>
+			<div className="item" key={profile_id}>
 				<ProfilePicComponent username={username} imageAddress={profile_pic_url} />
 
 				<div className="content">
@@ -19,20 +21,6 @@ const ListOfChanges = (props) => {
 					</a>
 					<div className="description">
 						{changes.map(({ parameterChanged, newValue, changeText }, index) => {
-							if (parameterChanged === 'is_active') {
-								if (!+newValue) {
-									return (
-										<div key={index} style={{ marginTop: '1rem' }}>
-											{username} has changed their username or has deactived their account!
-										</div>
-									);
-								}
-								return (
-									<div key={index} style={{ marginTop: '1rem' }}>
-										{username} has reactived their account !!!
-									</div>
-								);
-							}
 							return (
 								<div key={index} style={{ marginTop: '1rem' }}>
 									<b>{changeText}</b> is changed.it is now {ValueStyler(newValue, parameterChanged)}
@@ -46,4 +34,4 @@ const ListOfChanges = (props) => {
 	});
 };
 
-export default ListOfChanges
+export default ListOfChanges;
