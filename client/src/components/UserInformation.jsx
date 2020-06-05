@@ -66,7 +66,7 @@ const UserInformation = ({ userInformation, action, imageClickedFunc }) => {
 				</div>
 
 				<Link
-					to={`/modalMessage/${action}/${userInformation.username}/${userInformation.profile_id}`}
+					to={`/modalMessage/${action}/${userInformation.username}/${userInformation.id}`}
 					className="ui bottom attached button"
 				>
 					<i className={userInformation.buttonText.icon}></i>
