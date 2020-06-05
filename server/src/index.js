@@ -7,8 +7,7 @@ const routes = require("./routes/handlers")
 
 
 //modules for downloading images
-var fs = require("fs")
-// const request = require('request')
+const fs = require("fs")
 const app = express();
 const PORT = process.env.PORT || 4000
 
@@ -25,7 +24,7 @@ app.use(express.json())
 app.use(morgan('dev'))
 app.use(cors({ origin }))
 
-app.use('/static', express.static('instagram_users_profile_pics'))
+app.use('/static', express.static('./src/instagram_users_profile_pics'))
 
 
 //for serving static files 
