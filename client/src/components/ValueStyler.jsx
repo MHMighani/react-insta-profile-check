@@ -2,6 +2,7 @@ import React from 'react';
 
 const ValueStyler = (value, parameterChanged) => {
 	let output = value;
+	let backgroundColor;
 	let style = { padding: '5px 5px', color: 'white' };
 
 	if (value === '') {
@@ -10,11 +11,13 @@ const ValueStyler = (value, parameterChanged) => {
 	} else if (parameterChanged === 'profile_pic_url') {
 		output = <img className="ui avatar image tiny" src={value} alt="profile pic" />;
 	} else if (parameterChanged === 'is_active') {
-		output = value === 1 ? 'active' : 'deactived';
-		style = { ...style, background: 'gray' };
+		output = +value ? 'active' : 'deactived';
+		backgroundColor = +value ? 'green' : 'red';
+		style = { ...style, background: backgroundColor };
 	} else if (parameterChanged === 'is_private') {
-		output = value === 1 ? 'public' : 'private';
-		style = { ...style, background: 'purple' };
+		output = +value ? 'public' : 'private';
+		backgroundColor = +value ? 'green' : 'red';
+		style = { ...style, background: backgroundColor };
 	} else {
 		style = { ...style, color: 'black' };
 	}
