@@ -37,7 +37,7 @@ const UserInformation = ({ userInformation, action, imageClickedFunc }) => {
 					{userInformation.is_active === 0 && <label className="ui red ribbon label">Not Active</label>}
 					{userInformation.total_change > 0 && (
 						<div className="floating ui blue label">
-							<Link to={`/userChangesHistory/${userInformation.profile_id}`}>
+							<Link to={`/userChangesHistory/${userInformation.username}`}>
 								{userInformation.total_change}
 							</Link>
 						</div>

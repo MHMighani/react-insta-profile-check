@@ -121,10 +121,10 @@ router.get('/profile_images_history/:id', function (req, res) {
 	});
 });
 
-router.get('/userChangesHistory/:id', (req, res) => {
-	const user_id = req.params.id;
+router.get('/userChangesHistory/:username', (req, res) => {
+	const username = req.params.username;
 
-	orm.getChangesHistoryOfUser(user_id, function (err, changesHistory) {
+	orm.getChangesHistoryOfUser(username, function (err, changesHistory) {
 		if (err) {
 			console.log('couldnt get user change record');
 		} else {

@@ -1,6 +1,5 @@
 const connection = require('./connection');
-const saveProfilePics = require('../saveProfilePics');
-const getCurrentDate = require('../getCurrentDate');
+const saveProfilePicsToFolder = require('../saveProfilePicsToFolder');
 const editInfoBeforeAdding = require('../editInfoBeforeAdding');
 const remove = require('remove');
 
@@ -53,7 +52,7 @@ const orm = {
 				console.log(err);
 				cb(err, null);
 			} else {
-				console.log(`${username} successfully added to database!!`)
+				console.log(`${username} successfully added to database!!`);
 				cb(data, null);
 			}
 		});
@@ -87,7 +86,7 @@ const orm = {
 	},
 
 	//updating user's information after changing
-	updatingUser: function (changes, cb) {
+	updatingUser: async function (changes, cb) {
 		//sql query for updating user's information after it is changed
 		let sqlQuery = changes.map((userChange) => {
 			const profile_id = userChange.profile_id;
@@ -99,16 +98,16 @@ const orm = {
 			});
 
 			let historyChangeQuery = userChange.changes.map((change) => {
-				const date = getCurrentDate();
 				column = change.parameterChanged;
 				newValue = change.newValue;
 				oldValue = change.oldValue;
 
 				let profilePicQuery = '';
-				const changeHistoryQuery = `insert into instagram_change_history(user_id,changed_parameter,old_value,new_value,date_modified) values('${profile_id}','${column}','${oldValue}','${newValue}','${date}');`;
+				const changeHistoryQuery = `insert into instagram_change_history(user_id,changed_parameter,old_value,new_value) values('${profile_id}','${column}','${oldValue}','${newValue}');`;
 				if (change.parameterChanged === 'profile_pic_url') {
 					profilePicQuery = `insert into profile_pic_history(profile_id,profile_pic_name) 
-          values('${profile_id}','${newValue}');`;
+		  values('${profile_id}','${newValue}');`;
+					saveProfilePicsToFolder(change.newValue, profile_id);
 				}
 				return changeHistoryQuery + profilePicQuery;
 			});
@@ -116,23 +115,25 @@ const orm = {
 			changeQuery = changeQuery.join(',');
 
 			const historyQuery = historyChangeQuery.join(';');
-
 			const mainInfoQuery = `update insta_profile_info\nset ${changeQuery}\nwhere profile_id = '${profile_id}';`;
-
 			const mainSqlQuery = mainInfoQuery + historyQuery;
 
 			return mainSqlQuery;
 		});
 
-		sqlQuery = sqlQuery[0];
+		async function queryToDataBase(sqlQuery) {
+			connection.query(sqlQuery, function (err, data) {
+				if (err) {
+					console.log(err);
 
-		connection.query(sqlQuery, function (err, data) {
-			if (err) {
-				console.log(err);
+					return cb(err, null);
+				}
+				return cb(null, data);
+			});
+		}
 
-				return cb(err, null);
-			}
-			cb(null, data);
+		sqlQuery.forEach(async (query) => {
+			await queryToDataBase(query);
 		});
 	},
 
@@ -150,18 +151,23 @@ const orm = {
 		});
 	},
 
-	getChangesHistoryOfUser: function (user_id, cb) {
+	getChangesHistoryOfUser: function (username, cb) {
+		console.log(username);
 		const sqlQuery = `
-      select t1.*,t2.username,t2.profile_pic_url
-      from instagram_change_history t1
-      left join insta_profile_info t2
-      on t1.user_id = t2.profile_id
-      where t1.user_id = ${user_id};
+			select t1.*,t2.username,t2.profile_pic_url
+			from instagram_change_history t1
+			left join insta_profile_info t2
+			on t1.user_id = t2.profile_id
+			where t2.username = '${username}';
     `;
 
 		connection.query(sqlQuery, function (err, data) {
-			if (err) cb(err, null);
-			cb(null, data);
+			if (err) {
+				console.log(err)
+				cb(err, null);
+			} else {
+				cb(null, data);
+			}
 		});
 	},
 

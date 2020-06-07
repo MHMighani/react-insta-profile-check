@@ -28,7 +28,7 @@ const App = () => {
 						<Route exact path="/changes" component={ChangesHistory} />
 						<Route exact path="/slider" component={Slider} />
 						<Route path="/modalMessage/:action/:username/:id" component={ModalMessage} />
-						<Route path="/userChangesHistory/:id" component={ChangeHistoryOfUser} />
+						<Route path="/userChangesHistory/:username" component={ChangeHistoryOfUser} />
 						<Route component={Default} />
 					</Switch>
 				</div>

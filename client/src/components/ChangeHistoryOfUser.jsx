@@ -6,10 +6,10 @@ import Modal from './Modal';
 
 const ChangeHistoryOfUser = (props) => {
 	const [changeList, setChangeList] = useState([]);
-
+	const username = props.match.params.username;
 	useEffect(() => {
 		const fetchData = async () => {
-			const changeList = await getHistoryChangeOfUser(props.match.params.id);
+			const changeList = await getHistoryChangeOfUser(username);
 			setChangeList(changeList);
 		};
 		fetchData();
@@ -26,7 +26,7 @@ const ChangeHistoryOfUser = (props) => {
 	};
 
 	const content = <ChangeHistoryList changeHistoryArray={changeList} />;
-	return <Modal title={`user's change history`} content={content} actions={renderActions()} />;
+	return <Modal title={`${username}'s change history`} content={content} actions={renderActions()} />;
 };
 
 export default ChangeHistoryOfUser;
