@@ -15,8 +15,8 @@ const ValueStyler = (value, parameterChanged) => {
 		backgroundColor = +value ? 'green' : 'red';
 		style = { ...style, background: backgroundColor };
 	} else if (parameterChanged === 'is_private') {
-		output = +value ? 'public' : 'private';
-		backgroundColor = +value ? 'green' : 'red';
+		output = +value ? 'private' : 'public';
+		backgroundColor = +value ? 'red' : 'green';
 		style = { ...style, background: backgroundColor };
 	} else {
 		style = { ...style, color: 'black' };
