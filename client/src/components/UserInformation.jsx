@@ -3,74 +3,59 @@ import React from 'react';
 import Privacy from './Privacy';
 import Biography from './Biography';
 import { Link } from 'react-router-dom';
-import picNameExtractor from './PicNameExtractor';
+
+import ExternalUrl from './ExternalUrl';
+import ActivationLabel from './ActivationLabel';
+import TotalChangeLabel from './TotalChangeLabel';
+import UserLinkHeader from './UserLinkHeader';
+import convertToServerSource from '../convertToServerSource';
 
 const UserInformation = ({ userInformation, action, imageClickedFunc }) => {
-	if (userInformation && 'profile_pic_url_hd' in userInformation) {
-		userInformation.profile_pic_url = userInformation.profile_pic_url_hd;
-	} else if (userInformation && 'profile_pic_url' in userInformation) {
-		userInformation.profile_pic_url = `http://localhost:4000/static/${
-			userInformation.profile_id
-		}/${picNameExtractor(userInformation.profile_pic_url)}.jpg`;
-	}
+	let {
+		profile_id,
+		username,
+		external_url,
+		is_active,
+		is_private,
+		biography,
+		total_change,
+		profile_pic_url_hd,
+		profile_pic_url,
+		buttonText,
+		full_name,
+		bio_is_active,
+	} = userInformation;
 
-	let external_url_tag = <p style={{ color: 'lightGrey', textDecoration: 'italic' }}>No external link</p>;
+	profile_id = profile_id ? profile_id : userInformation.id;
+	profile_pic_url = profile_pic_url_hd ? profile_pic_url_hd : convertToServerSource(profile_pic_url, profile_id);
 
-	if (userInformation.external_url) {
-		external_url_tag = (
-			<a rel="noopener noreferrer" href={userInformation.external_url} target="_blank">
-				{userInformation.external_url}
-			</a>
-		);
-	}
-
-	if (!userInformation.username) {
+	if (!username) {
 		return null;
 	} else {
 		return (
 			<div className="ui card">
-				<div
-					className="image small"
-					onClick={() => imageClickedFunc(userInformation.profile_id)}
-					style={{ cursor: 'pointer' }}
-				>
-					{userInformation.is_active === 0 && <label className="ui red ribbon label">Not Active</label>}
-					{userInformation.total_change > 0 && (
-						<div className="floating ui blue label">
-							<Link to={`/userChangesHistory/${userInformation.username}`}>
-								{userInformation.total_change}
-							</Link>
-						</div>
-					)}
-
-					<img src={userInformation.profile_pic_url} alt="profile pic" />
+				<div className="image small" onClick={() => imageClickedFunc(profile_id)} style={{ cursor: 'pointer' }}>
+					<ActivationLabel isActive={is_active} />
+					<TotalChangeLabel totalChange={total_change} username={username} />
+					<img src={profile_pic_url} alt="profile pic" />
 				</div>
 
 				<div className="content">
 					<div className="header">
-						<a
-							href={`https://www.instagram.com/${userInformation.username}/`}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							{userInformation.username}
-						</a>
+						<UserLinkHeader username={username} />
 					</div>
-					{userInformation.full_name}
+					{full_name}
 					<div className="discription">
-						<Biography biographyText={userInformation.biography} isActive={userInformation.bio_is_active} />
-						{external_url_tag}
+						<Biography biographyText={biography} isActive={bio_is_active} />
+						<ExternalUrl externalUrl={external_url} />
 					</div>
 
-					<Privacy is_private={userInformation.is_private} />
+					<Privacy is_private={is_private} />
 				</div>
 
-				<Link
-					to={`/modalMessage/${action}/${userInformation.username}/${userInformation.id}`}
-					className="ui bottom attached button"
-				>
-					<i className={userInformation.buttonText.icon}></i>
-					{userInformation.buttonText.text}
+				<Link to={`/modalMessage/${action}/${username}/${profile_id}`} className="ui bottom attached button">
+					<i className={buttonText.icon}></i>
+					{buttonText.text}
 				</Link>
 			</div>
 		);

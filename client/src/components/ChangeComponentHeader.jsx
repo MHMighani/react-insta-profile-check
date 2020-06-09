@@ -1,18 +1,14 @@
 import React from 'react';
 import DateComponent from './DateComponent';
+import UserLinkHeader from './UserLinkHeader';
 
-const ChangeComponentHeader = ({ dateModified, username }) => {
-	const profileLinkAddress = `https://www.instagram.com/${username}/`;
-	const userLink = (
-		<a href={profileLinkAddress} rel="noopener noreferrer" target="_blank">
-			{username}
-		</a>
-	);
+const ChangeComponentHeader = ({ dateModified = null, username }) => {
+	dateModified = <DateComponent date={dateModified} />
 
 	const header = (
 		<div className="header">
-			{userLink}
-			<DateComponent date={dateModified} />
+			<UserLinkHeader username={username} />
+			{dateModified}
 		</div>
 	);
 
