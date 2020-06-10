@@ -32,16 +32,21 @@ const AddNewUser = () => {
 		setNotFoundStatus(false);
 	};
 
-	let resultBox;
-	if (notFoundStatus) {
-		resultBox = <UserNameNotFound username={username} />;
-	} else {
-		resultBox = (
-			<div className="ui cards">
-				<UserInformation action="add" userInformation={info} />
-			</div>
-		);
-	}
+	const renderResultBoxContent = () => {
+		let resultBox;
+
+		if (notFoundStatus) {
+			resultBox = <UserNameNotFound username={username} />;
+		} else {
+			resultBox = (
+				<div className="ui cards">
+					<UserInformation action="add" userInformation={info} />
+				</div>
+			);
+		}
+
+		return resultBox;
+	};
 
 	return (
 		<div className="ui six column centered grid">
@@ -59,7 +64,7 @@ const AddNewUser = () => {
 				</div>
 			</div>
 			<div className="six column row">
-				<div className="submitSection">{resultBox}</div>
+				<div className="submitSection">{renderResultBoxContent()}</div>
 			</div>
 		</div>
 	);

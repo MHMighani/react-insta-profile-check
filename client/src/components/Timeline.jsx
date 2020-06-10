@@ -4,6 +4,7 @@ import Spinner from './Spinner';
 import NoChangesComponent from './NoChangesComponent';
 import ListOfChanges from './ListOfChanges';
 
+
 const Timeline = () => {
 	const [usersChangeInfo, setUsersChangeInfo] = useState([]);
 	const [spinnerStatus, setSpinnerStatus] = useState(true);
@@ -22,16 +23,14 @@ const Timeline = () => {
 	if (spinnerStatus) {
 		return <Spinner />;
 	}
+	
 	const usersChanges = usersChangeInfo;
 	let message;
 
-	if (!usersChanges.length) {
+	if (usersChanges.length === 0) {
 		message = <NoChangesComponent section="timeline" />;
 	} else {
 		message = <ListOfChanges users={usersChanges} />;
-	}
-
-	if (usersChanges.length) {
 		updateUsersChanges(usersChanges);
 	}
 

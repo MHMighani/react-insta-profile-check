@@ -1,8 +1,8 @@
 import React from 'react';
-import PicNameExtractor from './PicNameExtractor';
 import ProfilePicChangeHistory from './ProfilePicChangeHistory';
 import ParameterChangeHistory from './ParameterChangeHistory';
 import ChangeComponentHeader from './ChangeComponentHeader';
+import convertToServerSource from '../convertToServerSource';
 
 const ChangeHistoryList = ({ changeHistoryArray }) => {
 	const changeHistoryList = changeHistoryArray
@@ -19,7 +19,7 @@ const ChangeHistoryList = ({ changeHistoryArray }) => {
 				new_Value,
 			}) => {
 				
-				profile_pic_url = `http://localhost:4000/static/${user_id}/${PicNameExtractor(profile_pic_url)}.jpg`;
+				profile_pic_url = convertToServerSource(profile_pic_url,user_id);
 
 				const header = (
 					<ChangeComponentHeader

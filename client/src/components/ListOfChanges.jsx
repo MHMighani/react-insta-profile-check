@@ -1,24 +1,18 @@
 import React from 'react';
 import ValueStyler from './ValueStyler';
 import ProfilePicComponent from './ProfilePicComponent';
-import PicNameExtractor from './PicNameExtractor';
+import UserLinkHeader from './UserLinkHeader';
+import convertToServerSource from '../convertToServerSource';
 
 const ListOfChanges = (props) => {
 	return props.users.map(({ profile_id, profile_pic_url, username, changes }) => {
-		profile_pic_url = `http://localhost:4000/static/${profile_id}/${PicNameExtractor(profile_pic_url)}.jpg`;
+		profile_pic_url = convertToServerSource(profile_pic_url,profile_id)
 		return (
 			<div className="item" key={profile_id}>
 				<ProfilePicComponent username={username} imageAddress={profile_pic_url} />
 
 				<div className="content">
-					<a
-						className="header"
-						href={`https://instagram.com/${username}/`}
-						rel="noreferrer noopener"
-						target="_blank"
-					>
-						{username}
-					</a>
+					<UserLinkHeader username={username} />
 					<div className="description">
 						{changes.map(({ parameterChanged, newValue, changeText }, index) => {
 							return (

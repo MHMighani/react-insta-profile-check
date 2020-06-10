@@ -1,12 +1,10 @@
 import React from 'react';
-import PicNameExtractor from './PicNameExtractor';
 import ProfilePicComponent from './ProfilePicComponent';
+import convertToServerSource from '../convertToServerSource';
 
-const ProfilePicChangeHistory = ({header,username,oldPicUrl,newPicUrl,profile_id}) => {
-	const oldPicName = PicNameExtractor(oldPicUrl);
-	const newPicName = PicNameExtractor(newPicUrl);
-	const oldValueAddress = `http://localhost:4000/static/${profile_id}/${oldPicName}.jpg`;
-	const newValueAddress = `http://localhost:4000/static/${profile_id}/${newPicName}.jpg`;
+const ProfilePicChangeHistory = ({ header, username, oldPicUrl, newPicUrl, profile_id }) => {
+	const oldValueAddress = convertToServerSource(oldPicUrl, profile_id);
+	const newValueAddress = convertToServerSource(newPicUrl, profile_id);
 	return (
 		<React.Fragment>
 			<div className="content">

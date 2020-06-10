@@ -114,7 +114,7 @@ const orm = {
 
 			changeQuery = changeQuery.join(',');
 
-			const historyQuery = historyChangeQuery.join(';');
+			const historyQuery = historyChangeQuery.join('');
 			const mainInfoQuery = `update insta_profile_info\nset ${changeQuery}\nwhere profile_id = '${profile_id}';`;
 			const mainSqlQuery = mainInfoQuery + historyQuery;
 

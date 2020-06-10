@@ -6,12 +6,6 @@ const DisplayAllUsers = (props) => {
 	return props.allUsers.length ? (
 		<div className="ui four column celled grid">
 			{props.allUsers.map((user, index) => {
-				let full_name = (
-					<div className="meta" style={user.full_name === '' ? 'red' : null}>
-						{user.full_name === '' ? 'No Name' : user.full_name}
-					</div>
-				);
-
 				const userInformation = {
 					...user,
 					buttonText: { text: 'Delete', icon: 'delete icon', info: user.profile_id },
