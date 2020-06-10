@@ -18,6 +18,8 @@ const ValueStyler = (value, parameterChanged) => {
 		output = +value ? 'private' : 'public';
 		backgroundColor = +value ? 'red' : 'green';
 		style = { ...style, background: backgroundColor };
+	} else 	if(parameterChanged === 'external_url') {
+		output = <a rel="noopener noreferrer" target="_blank" href={value}>{value}</a>
 	} else {
 		style = { ...style, color: 'black' };
 	}
