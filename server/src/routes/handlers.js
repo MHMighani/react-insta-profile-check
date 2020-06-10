@@ -23,8 +23,7 @@ router.get('/all', (req, res) => {
 router.post('/add/:username', async (req, res) => {
 	const username = req.params.username;
 
-	const userInfo = getFilteredDataFromInstagram(username);
-
+	const userInfo = await getFilteredDataFromInstagram(username);
 	saveProfilePicsToFolder(userInfo.profile_pic_url, userInfo.profile_id);
 
 	orm.addUser(userInfo, function (err, data) {
@@ -48,7 +47,7 @@ router.get('/timeline', (req, res) => {
 				message: 'couldnt connect to database',
 			});
 		}
-		
+
 		function getChangesPromiseList(oldListOfUsersInfo) {
 			let usersInfoChangeList = [];
 
@@ -56,17 +55,17 @@ router.get('/timeline', (req, res) => {
 				let promise = new Promise(async (resolve) => {
 					const recentUserInfo = await getFilteredDataFromInstagram(oldUserInfo.username);
 					const changesList = getUsersInfoChangeList(oldUserInfo, recentUserInfo);
-					
-					resolve(changesList)
-				})
-				usersInfoChangeList.push(promise)
+
+					resolve(changesList);
+				});
+				usersInfoChangeList.push(promise);
 			});
-			return usersInfoChangeList
+			return usersInfoChangeList;
 		}
 
 		const resolvedArray = await Promise.all(getChangesPromiseList(oldListOfUsersInfo));
-		const unEmptyChanges = resolvedArray.filter(list => Object.keys(list).length > 0)
-		res.json(unEmptyChanges)
+		const unEmptyChanges = resolvedArray.filter((list) => Object.keys(list).length > 0);
+		res.json(unEmptyChanges);
 	});
 });
 
