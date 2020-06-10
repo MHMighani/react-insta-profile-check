@@ -29,37 +29,37 @@ const UserInformation = ({ userInformation, action, imageClickedFunc }) => {
 	profile_id = profile_id ? profile_id : userInformation.id;
 	profile_pic_url = profile_pic_url_hd ? profile_pic_url_hd : convertToServerSource(profile_pic_url, profile_id);
 
-	if (!username) {
-		return null;
-	} else {
-		return (
-			<div className="ui card">
-				<div className="image small" onClick={() => imageClickedFunc(profile_id)} style={{ cursor: 'pointer' }}>
-					<ActivationLabel isActive={is_active} />
-					<TotalChangeLabel totalChange={total_change} username={username} />
-					<img src={profile_pic_url} alt="profile pic" />
-				</div>
-
-				<div className="content">
-					<div className="header">
-						<UserLinkHeader username={username} />
-					</div>
-					{full_name}
-					<div className="discription">
-						<Biography biographyText={biography} isActive={bio_is_active} />
-						<ExternalUrl externalUrl={external_url} />
-					</div>
-
-					<Privacy is_private={is_private} />
-				</div>
-
-				<Link to={`/modalMessage/${action}/${username}/${profile_id}`} className="ui bottom attached button">
-					<i className={buttonText.icon}></i>
-					{buttonText.text}
-				</Link>
+	return username ? (
+		<div className="ui card">
+			<div
+				className="image small"
+				onClick={() => (profile_pic_url_hd ? null : imageClickedFunc(profile_id))}
+				style={{ cursor: 'pointer' }}
+			>
+				<ActivationLabel isActive={is_active} />
+				<TotalChangeLabel totalChange={total_change} username={username} />
+				<img src={profile_pic_url} alt="profile pic" />
 			</div>
-		);
-	}
+
+			<div className="content">
+				<div className="header">
+					<UserLinkHeader username={username} />
+				</div>
+				{full_name}
+				<div className="discription">
+					<Biography biographyText={biography} isActive={bio_is_active} />
+					<ExternalUrl externalUrl={external_url} />
+				</div>
+
+				<Privacy is_private={is_private} />
+			</div>
+
+			<Link to={`/modalMessage/${action}/${username}/${profile_id}`} className="ui bottom attached button">
+				<i className={buttonText.icon}></i>
+				{buttonText.text}
+			</Link>
+		</div>
+	) : null;
 };
 
 export default UserInformation;
