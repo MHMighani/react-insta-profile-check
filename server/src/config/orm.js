@@ -53,7 +53,7 @@ const orm = {
 				cb(err, null);
 			} else {
 				console.log(`${username} successfully added to database!!`);
-				cb(data, null);
+				cb(null,data);
 			}
 		});
 	},

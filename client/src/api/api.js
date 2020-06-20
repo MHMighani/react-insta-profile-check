@@ -5,8 +5,7 @@ var serverAddress = `http://localhost:4000`;
 export const getAllUsersInfo = async () => {
 	let url = `${serverAddress}/all`;
 
-	const response = await axios.get(url);
-	const data = await response.data.data;
+	const data = await axios.get(url).then(res => res.data);
 
 	return data;
 };
@@ -30,26 +29,24 @@ export const addNewUserToDatabase = async (username) => {
 
 	let response
 	try {
-		const response = await axios.post(url);
-		response = await response.data;
+		response = await axios.post(url)
 	} catch (error) {
-		response  = { type: 'error', errno: 1062 };
+		response  = { error,status:501, type: 'error', errno: 1062 };
 	} finally {
-		return response
+		return await response
 	}
 };
 
 export const deleteUser = async (userId) => {
 	let url = `${serverAddress}/delete/${userId}`;
 
-	await axios.delete(url);
+	return await axios.delete(url);
 };
 
 export const getUsersChanges = async () => {
 	let url = `${serverAddress}/timeline`;
 
-	const response = await axios.get(url);
-	const data = await response.data;
+	const data = axios.get(url).then(res => res.data);
 
 	return data;
 };
@@ -63,25 +60,25 @@ export const updateUsersChanges = async (users_changes) => {
 export const getChangesHistory = async () => {
 	let url = `${serverAddress}/changes`;
 
-	const response = await axios.get(url);
+	const data = await axios.get(url).then(res => res.data);
 
-	return response.data;
+	return data;
 };
 
 export const profilePicsHistoryOfUser = async (profile_id) => {
 	let url = `${serverAddress}/profile_images_history/${profile_id}`;
 
-	const response = await axios.get(url);
+	const data = axios.get(url).then(res => res.data);
 
-	return response.data;
+	return data;
 };
 
 export const getHistoryChangeOfUser = async (username) => {
 	let url = `${serverAddress}/userChangesHistory/${username}`;
 
-	const response = await axios.get(url);
+	const historyOfUserData = axios.get(url).then(res => res.data);
 
-	return response.data;
+	return historyOfUserData;
 };
 
 export const deleteUserPicture = async (user_id, picture_name, pic_history_id) => {
