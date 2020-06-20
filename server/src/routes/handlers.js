@@ -16,7 +16,7 @@ router.get('/all', (req, res) => {
 				message: "couldn't query database",
 			});
 		}
-		res.json({ data: users });
+		res.json(users);
 	});
 });
 
@@ -28,14 +28,12 @@ router.post('/add/:username', async (req, res) => {
 
 	orm.addUser(userInfo, function (err, data) {
 		if (err && err.errno === 1062) {
-			res.status(501).json({
+			return res.status(501).json({
 				type: 'error',
 				errno: 1062,
 			});
 		} else {
-			res.json({
-				type: 'success',
-			});
+			return res.status(200).json(data);
 		}
 	});
 });
@@ -74,7 +72,7 @@ router.delete('/delete/:id', function (req, res) {
 
 	orm.deleteUser(userId, function (err, data) {
 		if (err) {
-			res.status(501).json({
+			return res.status(501).json({
 				message: `couldn't delete user ${userId}`,
 			});
 		} else {

@@ -13,11 +13,14 @@ import ChangeHistoryOfUser from './components/ChangeHistoryOfUser';
 
 import Slider from './components/slider/Slider';
 
+import { ToastContainer } from 'react-toastify'
+
 import './App.css';
 
 const App = () => {
 	return (
 		<div className="App">
+			<ToastContainer />
 			<Router history={history}>
 				<div>
 					<Navbar />

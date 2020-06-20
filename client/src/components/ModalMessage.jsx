@@ -4,6 +4,11 @@ import { Link } from 'react-router-dom';
 import history from '../history';
 import { deleteUser as deleteUserApi } from '../api/api';
 import { addNewUserToDatabase as addUserApi } from '../api/api';
+import { toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const ModalMessage = (props) => {
 	const { action, username } = props.match.params;
@@ -14,17 +19,31 @@ const ModalMessage = (props) => {
 		if (action === 'delete') {
 			deleteUser(id);
 		} else if (action === 'add') {
-			addUser(username);
+			const response = addUser(username);
 		}
 	};
 
-	const deleteUser = (id) => {
-		deleteUserApi(id);
+	const deleteUser = async (id) => {
+		const response = await deleteUserApi(id);
+
+		if(response.status === 200){
+			toast.success('user successfully deleted')
+		}else{
+			toast.fail(`couldn't delete user`)
+		}
 		history.push('/allusers');
 	};
 
-	const addUser = (username) => {
-		addUserApi(username);
+	const addUser = async (username) => {
+		const response = await addUserApi(username);
+		
+		if(response.status === 200){
+			toast.success(`${username} successfully added.`)
+		}else if(response.status === 501){
+			toast.error(`${username} user exists!!`)
+		}else{
+			toast(`can't add ${username}.`)
+		}
 		history.push('/add');
 	};
 
@@ -63,12 +82,12 @@ const ModalMessage = (props) => {
 	};
 
 	return (
-		<Modal
-			title={renderTitle(action)}
-			content={renderContent(action, username)}
-			actions={renderActions()}
-			onDismiss={() => history.push('/allusers')}
-		/>
+			<Modal
+				title={renderTitle(action)}
+				content={renderContent(action, username)}
+				actions={renderActions()}
+				onDismiss={() => history.push('/allusers')}
+			/>
 	);
 };
 
