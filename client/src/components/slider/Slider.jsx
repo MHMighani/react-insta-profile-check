@@ -9,17 +9,32 @@ import { deleteUserPicture } from '../../api/api';
 import './slider_style.css';
 
 const Slider = (props) => {
-	
-  const { pics, toggleModal } = props;
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [showModal, setShowModal] = useState(false);
-  
+	const { pics, toggleModal } = props;
+	const [currentImageIndex, setCurrentImageIndex] = useState(0);
+	const [showModal, setShowModal] = useState(false);
+
+	const checkKey = (e) => {
+		e = e || window.event;
+
+		if (e.keyCode === 39) {
+			goToNext();
+		} else if (e.keyCode === 37) {
+			goToPrevious();
+		} else if (e.keyCode === 27) {
+			toggleModal();
+		}
+	};
+
+	document.onkeydown = checkKey;
+
 	useEffect(() => {
 		if (showModal !== props.showModal) {
 			setShowModal(props.showModal);
 			setCurrentImageIndex(0);
-    }
-    return () => setCurrentImageIndex(0)
+		}
+		return () => {
+			setCurrentImageIndex(0)
+		}
 	}, [props.showModal]);
 
 	const deleteButtonOnClick = () => {
@@ -42,9 +57,7 @@ const Slider = (props) => {
 		const currentPic = pics[currentImageIndex];
 
 		let currentImage =
-			pics.length > 0
-				? `${currentPic.profile_id}/${picNameExtractor(currentPic.profile_pic_name)}.jpg`
-				: '';
+			pics.length > 0 ? `${currentPic.profile_id}/${picNameExtractor(currentPic.profile_pic_name)}.jpg` : '';
 
 		return currentImage;
 	};
@@ -52,7 +65,7 @@ const Slider = (props) => {
 	const goToPrevious = () => {
 		if (currentImageIndex > 0) {
 			setCurrentImageIndex(currentImageIndex - 1);
-		}else if(currentImageIndex === 0){
+		} else if (currentImageIndex === 0) {
 			setCurrentImageIndex(pics.length - 1);
 		}
 	};
@@ -60,13 +73,9 @@ const Slider = (props) => {
 	const goToNext = () => {
 		if (currentImageIndex !== pics.length - 1) {
 			setCurrentImageIndex(currentImageIndex + 1);
-		}else if(currentImageIndex === pics.length - 1){
-			setCurrentImageIndex(0)
+		} else if (currentImageIndex === pics.length - 1) {
+			setCurrentImageIndex(0);
 		}
-	};
-
-	const closeSlider = () => {
-		this.setState({ modalShowClass: 'modal-display-none' });
 	};
 
 	const modalShowClass = () => {
@@ -74,8 +83,6 @@ const Slider = (props) => {
 
 		return modalShowClass;
 	};
-
-	
 
 	return (
 		<div className={modalShowClass()}>
@@ -86,7 +93,6 @@ const Slider = (props) => {
 					<RightArrow
 						toggleModal={toggleModal}
 						rightArrowFunction={goToNext}
-						closeButtonFunction={closeSlider}
 					/>
 				</div>
 				<SliderFooter
