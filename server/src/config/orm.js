@@ -39,13 +39,17 @@ const orm = {
 		} = editedInfo;
 
 		// sqlQuery for adding a user
-		const sqlQuery = `insert into insta_profile_info(
-         profile_id,username,profile_pic_url,biography,full_name,is_private,external_url,
-         num_following,num_followers)
-         values('${profile_id}','${username}','${profile_pic_url}','${biography}',
-                '${full_name}','${is_private}','${external_url}','${num_following}','${num_followers}'
+		const sqlQuery = `insert into insta_profile_info
+							(profile_id,username,
+							profile_pic_url,biography,
+							full_name,is_private,
+							external_url,
+         					num_following,num_followers)
+        					values('${profile_id}','${username}','${profile_pic_url}','${biography}',
+                			'${full_name}','${is_private}','${external_url}','${num_following}','${num_followers}'
          );
-         insert into profile_pic_history(profile_id,profile_pic_name) values('${profile_id}','${profile_pic_url}');`;
+		 insert into profile_pic_history(profile_id,profile_pic_name) 
+		 values('${profile_id}','${profile_pic_url}');`;
 
 		connection.query(sqlQuery, function (err, data) {
 			if (err) {
@@ -87,54 +91,29 @@ const orm = {
 
 	//updating user's information after changing
 	updatingUser: async function (changes, cb) {
+		const updateUsersInfoQueries = []
+		const insertToChangeHistoryOfUserQueries = []
+
 		//sql query for updating user's information after it is changed
-		let sqlQuery = changes.map((userChange) => {
-			const profile_id = userChange.profile_id;
-
-			let changeQuery = userChange.changes.map((change) => {
-				column = change.parameterChanged;
-				newValue = change.newValue;
-				return `${column} = '${newValue}'`;
-			});
-
-			let historyChangeQuery = userChange.changes.map((change) => {
-				column = change.parameterChanged;
-				newValue = change.newValue;
-				oldValue = change.oldValue;
-
-				let profilePicQuery = '';
-				const changeHistoryQuery = `insert into instagram_change_history(user_id,changed_parameter,old_value,new_value) values('${profile_id}','${column}','${oldValue}','${newValue}');`;
-				if (change.parameterChanged === 'profile_pic_url') {
-					profilePicQuery = `insert into profile_pic_history(profile_id,profile_pic_name) 
-		  values('${profile_id}','${newValue}');`;
-					saveProfilePicsToFolder(change.newValue, profile_id);
-				}
-				return changeHistoryQuery + profilePicQuery;
-			});
-
-			changeQuery = changeQuery.join(',');
-
-			const historyQuery = historyChangeQuery.join('');
-			const mainInfoQuery = `update insta_profile_info\nset ${changeQuery}\nwhere profile_id = '${profile_id}';`;
-			const mainSqlQuery = mainInfoQuery + historyQuery;
-
-			return mainSqlQuery;
+		changes.map((userChange) => {
+			updateUsersInfoQueries.push(getUpdateUserInfoQuery(userChange))
+			insertToChangeHistoryOfUserQueries.push(getInsertUserChangeHistoryQuery(userChange))
 		});
 
-		async function queryToDataBase(sqlQuery) {
-			connection.query(sqlQuery, function (err, data) {
-				if (err) {
-					console.log(err);
+		const updateUsersInfoQueriesString = updateUsersInfoQueries.join('')
+		const insertToChangeHistoryOfUserQueriesString = insertToChangeHistoryOfUserQueries.join('')
 
-					return cb(err, null);
-				}
-				return cb(null, data);
-			});
-		}
+		const sqlQuery = updateUsersInfoQueriesString + insertToChangeHistoryOfUserQueriesString;
 
-		sqlQuery.forEach(async (query) => {
-			await queryToDataBase(query);
+		connection.query(sqlQuery, function (err, data) {
+			if (err) {
+				console.log(err);
+
+				return cb(err, null);
+			}
+			return cb(null, data);
 		});
+		
 	},
 
 	getChangesHistory: function (cb) {
@@ -192,5 +171,47 @@ const orm = {
 		});
 	},
 };
+
+function getUpdateUserInfoQuery({changes,profile_id}){
+	const changeQueryList = changes.map(({parameterChanged,newValue}) => {
+		column = parameterChanged	
+		return `${column} = '${newValue}'`;
+	});
+
+	const changeQueryString = changeQueryList.join(',')
+
+	const updateUserInfoQuery = `update insta_profile_info
+								set ${changeQueryString}
+								where profile_id = '${profile_id}';`;
+
+	return updateUserInfoQuery
+}
+
+function getInsertUserChangeHistoryQuery({changes,profile_id}){
+	let historyChangeQueryList = changes.map(({parameterChanged,newValue,oldValue}) => {
+		column = parameterChanged;
+
+		let profilePicQuery = '';
+		const changeHistoryQuery = `insert into instagram_change_history
+									(user_id,changed_parameter,old_value,new_value)
+									 values('${profile_id}','${column}','${oldValue}','${newValue}');`;
+
+		if (parameterChanged === 'profile_pic_url') {
+			profilePicQuery = getProfilePicChangeHistoryQuery(profile_id,newValue)
+			saveProfilePicsToFolder(newValue, profile_id);
+		}
+		return changeHistoryQuery + profilePicQuery;
+	});
+
+	const historyChangeQueryString = historyChangeQueryList.join('')
+	
+	return historyChangeQueryString
+}
+
+function getProfilePicChangeHistoryQuery(profile_id,newProfilePicName){
+	profilePicQuery = `insert into profile_pic_history(profile_id,profile_pic_name) 
+  					values('${profile_id}','${newProfilePicName}');`;
+	return profilePicQuery
+}
 
 module.exports = orm;
