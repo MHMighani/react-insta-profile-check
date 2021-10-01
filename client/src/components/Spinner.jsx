@@ -1,12 +1,10 @@
 import React from 'react'
+import Loader from 'react-loader-spinner'
 
 const Spinner = () => {
     return(
-        <div className="ui">
-            <div className="ui active inverted dimmer">
-                <div className="ui big text loader"></div>
-            </div>
-            <p></p>
+        <div className="index-spinner">
+            <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" />
         </div>
     )
 }
