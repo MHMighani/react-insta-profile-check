@@ -19,4 +19,4 @@ run `npm install` in both server and client folders to install dependencies
 
 run `npm start` in both server and client folders
 
-
+**Note**: This project does not work with Instagram's current API and restrictions properly
